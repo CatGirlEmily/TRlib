@@ -6,3 +6,7 @@ currently im exclusivily testing it all on windows old ass cmd as launching via 
 having no colors nor ANSI would be a good challenge / limitation
 
 TAK, postuje to tu tylko po to zeby wojtek nie pytal co 5 minut
+
+# todo
+- double buffer (sprawdz performance rysowania calosci na nowo vs sprawdzania zmian)
+- MULTI THREAD !!!!!!!!!!!
