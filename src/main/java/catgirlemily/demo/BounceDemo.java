@@ -4,6 +4,7 @@ import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.Trlib;
 import catgirlemily.trlib.drawable.Line;
 import catgirlemily.trlib.drawable.Rect;
+import catgirlemily.trlib.drawable.StyledRect;
 import catgirlemily.trlib.types.Vector2;
 
 public class BounceDemo extends Trlib {
@@ -20,7 +21,11 @@ public class BounceDemo extends Trlib {
 
     @Override
     public void onRender(TREngine renderer) {
-        new Rect(new Vector2(1,1), new Vector2(x,20), 1, '@').draw(renderer);
+        new StyledRect(new Vector2(10, 5), new Vector2(50, 15))
+    .withCorners('┌', '┐', '└', '┘') // Zaokrąglone lub proste rogi
+    .withEdges('─', '─', '│', '│')     // Cienkie linie
+    .withFilled(true, ' ')
+    .draw(renderer);
         
     }
 
