@@ -1,7 +1,6 @@
 package catgirlemily.trlib;
 
 import java.util.Arrays;
-
 import catgirlemily.trlib.math.Vector2;
 
 public class TREngine {
@@ -11,7 +10,7 @@ public class TREngine {
     private final char[][] buffer;
     
     /**
-     * new TREngine builder
+     * new TREngine constructor
      * @param width - width in characters
      * @param height - height in lines
      * @param fps - refresh rate
@@ -24,6 +23,24 @@ public class TREngine {
         clear();
     }
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// LL draw methods \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void drawPoint(int x, int y, char character) {
+        if (x >= 0 && x < width && y >= 0 && y < height) {
+            buffer[y][x] = character;
+        }
+    }
+
+    public void drawPoint(Vector2 vector2, char character) {
+        drawPoint(vector2.x(), vector2.y(), character);
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// Core Methods \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * fills the buffor with spaces
      */
@@ -33,30 +50,6 @@ public class TREngine {
         }
     }
 
-    /**
-     * Draws a character on position specified using Vector2
-     * Clamps value to not go out of bounds.
-     */
-    public void drawPoint(Vector2 vector2, char character) {
-        int x = vector2.x();
-        int y = vector2.y();
-
-        if (x >= 0 && x < width && y >= 0 && y < height) {
-            buffer[y][x] = character;
-        }
-    }
-
-    /**
-     * Draws a character on position specified using separate x and y value
-     * Also clamps value to not go out of bounds.
-     */
-    public void drawPointLegacy(int x, int y, char character) {
-        if (x >= 0 && x < width && y >= 0 && y < height) {
-            buffer[y][x] = character;
-        }
-    }
-
-    
     /**
      * Main render method.
      * Compiles bufor into a string and prints it to the console
@@ -74,10 +67,20 @@ public class TREngine {
         System.out.flush();
     }
 
-    // Getters
-    public int getWidth() { return width; }
-    public int getHeight() { return height; }
-    public int getFPS() { return fps; }
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// Getters \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////////////////////////////////////////////////////////////
+    public int getWidth() { 
+        return width; 
+    }
+
+    public int getHeight() { 
+        return height;
+    }
+    
+    public int getFPS() {
+        return fps;
+    }
 
     // Methods
     public void setFps(int newFps) { fps = newFps; }

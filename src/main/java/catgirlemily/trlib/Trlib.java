@@ -25,7 +25,8 @@ public abstract class Trlib {
             renderer.display();
 
             try {
-                Thread.sleep(1000 / this.renderer.getFPS());
+                // prevent zero division via Math.max()
+                Thread.sleep(Math.max(1000 / this.renderer.getFPS(), 1));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
