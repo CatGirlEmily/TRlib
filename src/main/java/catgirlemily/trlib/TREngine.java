@@ -26,7 +26,7 @@ public class TREngine {
         this.height = height;
         this.fps = fps;
         this.buffer = new char[height][width];
-        this.out = new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
+        this.out = new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_16));
         clear();
     }
 
