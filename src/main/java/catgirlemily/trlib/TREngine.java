@@ -1,5 +1,9 @@
 package catgirlemily.trlib;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import catgirlemily.trlib.types.Vector2;
@@ -9,6 +13,7 @@ public class TREngine {
     private int width;
     private int height;
     private final char[][] buffer;
+    private final BufferedWriter out;
     
     /**
      * new TREngine constructor
@@ -21,6 +26,7 @@ public class TREngine {
         this.height = height;
         this.fps = fps;
         this.buffer = new char[height][width];
+        this.out = new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
         clear();
     }
 
@@ -56,16 +62,17 @@ public class TREngine {
      * Compiles bufor into a string and prints it to the console
      */
     public void display() {
-        StringBuilder frame = new StringBuilder();
-        
-        for (int y = 0; y < height; y++) {
-            frame.append(buffer[y]);
-            frame.append('\n');
-        }
+        try {
 
-        // print every single line at once.
-        System.out.print(frame.toString());
-        System.out.flush();
+            for (int y = 0; y < height; y++) {
+                out.write(buffer[y]);
+                out.newLine();
+            }
+
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
