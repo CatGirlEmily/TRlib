@@ -6,12 +6,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AnsiTest",
+            "request": "launch",
+            "mainClass": "catgirlemily.demo.AnsiTest",
+            "projectName": "trlib_8c41d253"
+        },
+        {
+            "type": "java",
             "name": "BounceDemo",
             "request": "launch",
             "mainClass": "catgirlemily.demo.BounceDemo",
             "projectName": "trlib_8c41d253",
             "console": "externalTerminal"
-            
         },
         {
             "type": "java",

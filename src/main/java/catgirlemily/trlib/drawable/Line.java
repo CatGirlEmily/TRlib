@@ -3,34 +3,32 @@ package catgirlemily.trlib.drawable;
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.core.Drawable;
 import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.util.Pattern;
 
 public class Line implements Drawable {
     private final Vector2 v1, v2;
-    private int width;
-    private char character;
+    private final String pattern;
+    private final int width;
 
-
-    // Constructor //
-    public Line(Vector2 v1, Vector2 v2, char character, int width) {
+    public Line(Vector2 v1, Vector2 v2, String pattern, int width) {
         this.v1 = v1;
         this.v2 = v2;
-        this.character = character;
+        this.pattern = pattern;
         this.width = width;
     }
 
-    // main draw method
     @Override
     public void draw(TREngine renderer) {
-        // calculate offset
+        // Tworzymy JEDEN iterator na całą operację rysowania linii
+        Pattern it = new Pattern(pattern);
+        
         int startOffset = -(width / 2);
-
         for (int w = 0; w < width; w++) {
-            int currentYOffset = startOffset + w;
-            drawBresenham(renderer, currentYOffset);
+            drawBresenham(renderer, it, startOffset + w);
         }
     }
 
-    private void drawBresenham(TREngine renderer, int yOffset) {
+    private void drawBresenham(TREngine renderer, Pattern it, int yOffset) {
         int x1 = v1.x();
         int y1 = v1.y() + yOffset;
         int x2 = v2.x();
@@ -43,8 +41,7 @@ public class Line implements Drawable {
         int err = dx - dy;
 
         while (true) {
-            // use int for higher efficiency
-            renderer.drawPoint(x1, y1, character);
+            renderer.drawPoint(x1, y1, it.next());
 
             if (x1 == x2 && y1 == y2) break;
 

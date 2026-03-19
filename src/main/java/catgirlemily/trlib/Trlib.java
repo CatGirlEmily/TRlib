@@ -1,4 +1,4 @@
-package catgirlemily.trlib;
+package catgirlemily.trlib; 
 
 public abstract class Trlib {
     private final TREngine renderer;

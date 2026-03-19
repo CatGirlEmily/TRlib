@@ -2,27 +2,22 @@ package catgirlemily.trlib.drawable;
 
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.util.Pattern;
 
 public class StyledRect extends Rect {
-    private char tl = '+', tr = '+', bl = '+', br = '+';     // corners
-    private char top = '-', bottom = '-', left = '|', right = '|';     // walls
+    private String tl = "+", tr = "+", bl = "+", br = "+";
+    private String top = "-", bottom = "-", left = "|", right = "|";
 
     public StyledRect(Vector2 v1, Vector2 v2) {
-        super(v1, v2, 1, '+');
+        super(v1, v2, 1, "");
     }
 
-    /**
-     * Sets custom characters for edges (Top, Bottom, Left, Right)
-     */
-    public StyledRect withEdges(char t, char b, char l, char r) {
+    public StyledRect withEdges(String t, String b, String l, String r) {
         this.top = t; this.bottom = b; this.left = l; this.right = r;
         return this;
     }
 
-    /**
-     * Sets custom characters for each corner
-     */
-    public StyledRect withCorners(char topLeft, char topRight, char bottomLeft, char bottomRight) {
+    public StyledRect withCorners(String topLeft, String topRight, String bottomLeft, String bottomRight) {
         this.tl = topLeft; this.tr = topRight; 
         this.bl = bottomLeft; this.br = bottomRight;
         return this;
@@ -37,22 +32,24 @@ public class StyledRect extends Rect {
         int minY = Math.min(v1.y(), v2.y());
         int maxY = Math.max(v1.y(), v2.y());
 
-        // 1. Horizontal Edges
+        Pattern topP = new Pattern(top);
+        Pattern botP = new Pattern(bottom);
         for (int x = minX + 1; x < maxX; x++) {
-            renderer.drawPoint(x, minY, top);
-            renderer.drawPoint(x, maxY, bottom);
+            renderer.drawPoint(x, minY, topP.next());
+            renderer.drawPoint(x, maxY, botP.next());
         }
 
-        // 2. Vertical Edges
+        Pattern leftP = new Pattern(left);
+        Pattern rightP = new Pattern(right);
         for (int y = minY + 1; y < maxY; y++) {
-            renderer.drawPoint(minX, y, left);
-            renderer.drawPoint(maxX, y, right);
+            renderer.drawPoint(minX, y, leftP.next());
+            renderer.drawPoint(maxX, y, rightP.next());
         }
 
-        // 3. Corners
-        renderer.drawPoint(minX, minY, tl); // Top-Left
-        renderer.drawPoint(maxX, minY, tr); // Top-Right
-        renderer.drawPoint(minX, maxY, bl); // Bottom-Left
-        renderer.drawPoint(maxX, maxY, br); // Bottom-Right
+
+        renderer.drawPoint(minX, minY, new Pattern(tl).next());
+        renderer.drawPoint(maxX, minY, new Pattern(tr).next());
+        renderer.drawPoint(minX, maxY, new Pattern(bl).next());
+        renderer.drawPoint(maxX, maxY, new Pattern(br).next());
     }
 }
