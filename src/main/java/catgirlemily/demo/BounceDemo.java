@@ -2,9 +2,9 @@ package catgirlemily.demo;
 
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.Trlib;
-import catgirlemily.trlib.geometry.Line;
-import catgirlemily.trlib.geometry.Rect;
-import catgirlemily.trlib.math.Vector2;
+import catgirlemily.trlib.drawable.Line;
+import catgirlemily.trlib.drawable.Rect;
+import catgirlemily.trlib.types.Vector2;
 
 public class BounceDemo extends Trlib {
     int x = 0;

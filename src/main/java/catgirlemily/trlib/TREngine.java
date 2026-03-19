@@ -1,7 +1,8 @@
 package catgirlemily.trlib;
 
 import java.util.Arrays;
-import catgirlemily.trlib.math.Vector2;
+
+import catgirlemily.trlib.types.Vector2;
 
 public class TREngine {
     private int fps;

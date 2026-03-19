@@ -1,8 +1,8 @@
-package catgirlemily.trlib.geometry;
+package catgirlemily.trlib.drawable;
 
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.core.Drawable;
-import catgirlemily.trlib.math.Vector2;
+import catgirlemily.trlib.types.Vector2;
 
 public class Line implements Drawable {
     private final Vector2 v1, v2;
