@@ -1,0 +1,26 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.restore
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# vsc / ide
+.vscode/
+.history/
+*.code-workspace
+
+# Java - pliki binarne
+*.class
+*.jar
+*.war
+*.ear
+
+# Systemowe
+String Thumbs.db
+Desktop.ini
+.DS_Store
