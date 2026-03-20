@@ -5,23 +5,23 @@ package catgirlemily.trlib.util;
  * Allows for repeating sequences of characters like "░▒▓".
  */
 public class Pattern {
-    private final String pattern;
-    private int cursor = 0;
+	private final String pattern;
+	private int cursor = 0;
 
-    public Pattern(String pattern) {
-        // Fallback to '#' if pattern is null or empty to avoid errors
-        this.pattern = (pattern == null || pattern.isEmpty()) ? "#" : pattern;
-    }
+	public Pattern(String pattern) {
+		// Fallback to '#' if pattern is null or empty to avoid errors
+		this.pattern = (pattern == null || pattern.isEmpty()) ? "#" : pattern;
+	}
 
-    /** Returns the next character in the sequence and increments cursor. */
-    public char next() {
-        char c = pattern.charAt(cursor % pattern.length());
-        cursor++;
-        return c;
-    }
+	/** Returns the next character in the sequence and increments cursor. */
+	public char next() {
+		char c = pattern.charAt(cursor % pattern.length());
+		cursor++;
+		return c;
+	}
 
-    /** Resets the iteration to the beginning of the string. */
-    public void reset() {
-        cursor = 0;
-    }
+	/** Resets the iteration to the beginning of the string. */
+	public void reset() {
+		cursor = 0;
+	}
 }

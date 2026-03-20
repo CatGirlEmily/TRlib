@@ -1,0 +1,1 @@
+!mvn package && java -cp target/trlib-1.0-SNAPSHOT.jar src/main/java/catgirlemily/demo/MyGame.java
