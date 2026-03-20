@@ -5,16 +5,7 @@ import catgirlemily.trlib.type.KeyCode;
 
 import com.sun.jna.platform.win32.User32;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.channels.AsynchronousSocketChannel;
-import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -126,7 +117,18 @@ public abstract class Trlib {
 	 * Scans the state of keys using GetAsyncKeyState.
 	 * Compares current state with the previous frame to trigger onKeyPress events.
 	 */
+	private int currentLinuxKey = -1;
 	private void processInput() {
+		if (!TREngine.IsOnWindows) {
+	        currentLinuxKey = -1;
+	        try {
+	            if (TREngine.input.available() > 0) {
+	                currentLinuxKey = TREngine.input.read();
+	                while (TREngine.input.available() > 0) { TREngine.input.read(); }
+	            }
+	        } catch (IOException e) { stop(); }
+	    }
+
 		// Iterate through standard Virtual Key codes (from Backspace to Scroll Lock)
 		for (int vk = 0x08; vk <= 0x91; vk++) {
 			boolean isDown = isKeyPressed(vk);
@@ -156,20 +158,11 @@ public abstract class Trlib {
 			return (state & 0x8000) != 0;
 		}
 		else {
-			// LINUXTODO
-			try {
-				if(TREngine.input.available() > 0) {
-					int key = TREngine.input.read();
-					if(key == vKey) {
-						return true;
-					}
-					return false;
-				}
-				return false;
-			}
-			catch(IOException e) {
-				return false;
-			}
+			vKey += 0x20;
+
+			if (currentLinuxKey == -1) { return false; }
+
+        	return currentLinuxKey == vKey;
 		}
 	}
 
@@ -185,5 +178,4 @@ public abstract class Trlib {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
 	public TREngine getRenderer() { return renderer; }
-
 }

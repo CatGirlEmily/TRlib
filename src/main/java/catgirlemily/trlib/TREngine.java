@@ -64,6 +64,8 @@ public class TREngine {
 			}
 		}
 		
+		System.out.print("\033[?1049h"); 
+		System.out.flush();
 		// Initial setup using engine utilities
 		clearTerminal();
 		setCursorVisible(false); // Hide cursor on startup
@@ -165,6 +167,9 @@ public class TREngine {
 
 			}
 		}
+
+		System.out.print("\033[?1049l"); 
+		System.out.flush();
 
 		setCursorVisible(true);
 		resetStyles();
