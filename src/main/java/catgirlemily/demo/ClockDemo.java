@@ -3,6 +3,7 @@ package catgirlemily.demo;
 import catgirlemily.trlib.Trlib;
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.drawable.Line;
+import catgirlemily.trlib.type.Color;
 import catgirlemily.trlib.type.Vector2;
 
 
@@ -15,7 +16,7 @@ public class ClockDemo extends Trlib {
 
     // Parametry ekranu zgodnie z prośbą: 150x55, 60 FPS
     public ClockDemo() { 
-        super(210, 55, 60);
+        super(210, 55, 30);
     }
 
     @Override
@@ -31,23 +32,38 @@ public class ClockDemo extends Trlib {
 
     @Override
     public void onRender(TREngine renderer) {
-        // Środek ekranu
-        int centerX = 150 / 2;
-        int centerY = 55 / 2;
-        
-        // Długość wskazówki (promień)
-        int radius = 38;
+    // Definiujemy pozycję i rozmiar kwadratu
+    Vector2 topLeft = new Vector2(10, 10);
+    Vector2 bottomRight = new Vector2(40, 25); // Szerokość 30, Wysokość 15
 
-        // Obliczamy koniec linii
-        // Używamy cos dla X i sin dla Y
-        int endX = centerX + (int) (Math.cos(angle) * radius * 2.0); // *2.0 bo znaki są wąskie
-        int endY = centerY + (int) (Math.sin(angle) * radius);
+    // Obliczamy pozostałe narożniki
+    Vector2 topRight = new Vector2(bottomRight.x(), topLeft.y());
+    Vector2 bottomLeft = new Vector2(topLeft.x(), bottomRight.y());
 
-        Vector2 start = new Vector2(centerX, centerY);
-        Vector2 end = new Vector2(endX, endY);
+    // Definiujemy wzór linii (np. pełny blok)
+    String pattern = "█";
+    int thickness = 1; // Grubość 1
 
-        // Rysujemy linię algorytmem Bresenhama (który masz w klasie Line)
-        new Line(start, end, "test", 2).draw(renderer);
+    // Rysujemy 4 linie, każda w innym kolorze (Tęcza)
+    // 1. Góra (Czerwona)
+    new Line(topLeft, topRight, pattern, thickness)
+        .withColor(Color.RED)
+        .draw(renderer);
+
+    // 2. Prawy bok (Żółty)
+    new Line(topRight, bottomRight, pattern, thickness)
+        .withColor(Color.YELLOW)
+        .draw(renderer);
+
+    // 3. Dół (Zielony)
+    new Line(bottomRight, bottomLeft, pattern, thickness)
+        .withColor(Color.GREEN)
+        .draw(renderer);
+
+    // 4. Lewy bok (Niebieski)
+    new Line(bottomLeft, topLeft, pattern, thickness)
+        .withColor(Color.BLUE)
+        .draw(renderer);
     }
 
     public static void main(String[] args) {

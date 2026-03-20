@@ -7,7 +7,7 @@ import catgirlemily.trlib.util.Pattern;
 
 /**
  * StyledRect - Specialized rectangle allowing different patterns for each side and corner.
- * Useful for GUI boxes with box-drawing characters (╔═╗).
+ * Now supports full ANSI coloring for both frame and filling.
  */
 public class StyledRect extends Rect {
     private String tl = "+", tr = "+", bl = "+", br = "+";
@@ -28,8 +28,20 @@ public class StyledRect extends Rect {
         return this;
     }
 
+    // Overriding color methods to ensure they return StyledRect (Fluent API)
+    @Override
+    public StyledRect withColor(Color color) {
+        super.withColor(color);
+        return this;
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// Render Methods \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public void draw(TREngine renderer) {
+        // 1. Draw fill first
         if (filled) drawFill(renderer);
 
         int minX = Math.min(v1.x(), v2.x());
@@ -37,26 +49,26 @@ public class StyledRect extends Rect {
         int minY = Math.min(v1.y(), v2.y());
         int maxY = Math.max(v1.y(), v2.y());
 
-        // Draw horizontal edges
+        // 2. Draw horizontal edges
         Pattern topP = new Pattern(top);
         Pattern botP = new Pattern(bottom);
         for (int x = minX + 1; x < maxX; x++) {
-            renderer.drawPoint(x, minY, topP.next(),Color.BLUE);
-            renderer.drawPoint(x, maxY, botP.next(),Color.BLUE);
+            renderer.drawPoint(x, minY, topP.next(), color);
+            renderer.drawPoint(x, maxY, botP.next(), color);
         }
 
-        // Draw vertical edges
+        // 3. Draw vertical edges
         Pattern leftP = new Pattern(left);
         Pattern rightP = new Pattern(right);
         for (int y = minY + 1; y < maxY; y++) {
-            renderer.drawPoint(minX, y, leftP.next(), Color.BLUE);
-            renderer.drawPoint(maxX, y, rightP.next(), Color.BLUE);
+            renderer.drawPoint(minX, y, leftP.next(), color);
+            renderer.drawPoint(maxX, y, rightP.next(), color);
         }
 
-        // Draw individual corners
-        renderer.drawPoint(minX, minY, new Pattern(tl).next(), Color.BLUE);
-        renderer.drawPoint(maxX, minY, new Pattern(tr).next(), Color.BLUE);
-        renderer.drawPoint(minX, maxY, new Pattern(bl).next(), Color.BLUE);
-        renderer.drawPoint(maxX, maxY, new Pattern(br).next(), Color.BLUE);
+        // 4. Draw individual corners
+        renderer.drawPoint(minX, minY, new Pattern(tl).next(), color);
+        renderer.drawPoint(maxX, minY, new Pattern(tr).next(), color);
+        renderer.drawPoint(minX, maxY, new Pattern(bl).next(), color);
+        renderer.drawPoint(maxX, maxY, new Pattern(br).next(), color);
     }
 }
