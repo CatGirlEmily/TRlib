@@ -13,10 +13,8 @@ public class WindowsAnsiEnabler {
 		boolean SetConsoleMode(Pointer hConsoleHandle, int dwxMode);
 	}
 
+	// NOTE: No flipofloping need to port that :P - Wojtuś
 	public static void enable() {
-		// windows exclusive
-		if (!System.getProperty("os.name").toLowerCase().contains("win")) return;
-
 		int STD_OUTPUT_HANDLE = -11;
 		int ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
 

@@ -5,6 +5,16 @@ import catgirlemily.trlib.type.KeyCode;
 
 import com.sun.jna.platform.win32.User32;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -141,8 +151,26 @@ public abstract class Trlib {
 	 */
 	public boolean isKeyPressed(int vKey) {
 		// 0x8000 is a bitmask checking the high-order bit (current physical state)
-		short state = User32.INSTANCE.GetAsyncKeyState(vKey);
-		return (state & 0x8000) != 0;
+		if(TREngine.IsOnWindows) {
+			short state = User32.INSTANCE.GetAsyncKeyState(vKey);
+			return (state & 0x8000) != 0;
+		}
+		else {
+			// LINUXTODO
+			try {
+				if(TREngine.input.available() > 0) {
+					int key = TREngine.input.read();
+					if(key == vKey) {
+						return true;
+					}
+					return false;
+				}
+				return false;
+			}
+			catch(IOException e) {
+				return false;
+			}
+		}
 	}
 
 	public boolean isKeyPressed(KeyCode key) {

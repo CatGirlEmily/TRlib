@@ -2,6 +2,8 @@ package catgirlemily.trlib.core;
 
 import com.sun.jna.platform.win32.User32;
 
+import catgirlemily.trlib.TREngine;
+
 /**
  * InputHandler - Direct Windows API key polling.
  * Allows for flawless multi-key detection.
@@ -14,9 +16,15 @@ public class InputHandler {
 	 */
 	public static boolean isKeyDown(int vKey) {
 		// GetAsyncKeyState zwraca wartość, gdzie najwyższy bit jest ustawiony,
-		// jeśli klawisz jest aktualnie trzymany.
-		short state = User32.INSTANCE.GetAsyncKeyState(vKey);
-		return (state & 0x8000) != 0;
+		// jeśli klawisUser32.INSTANCE.GetAsyncKeyState(vKey);z jest aktualnie trzymany.
+		if(TREngine.IsOnWindows) {
+			short state = User32.INSTANCE.GetAsyncKeyState(vKey);
+			return (state & 0x8000) != 0;
+		}
+		else {
+			// LINUXTODO
+			return false;
+		}
 	}
 
 	// Pomocnicze kody klawiszy (Virtual Key Codes)

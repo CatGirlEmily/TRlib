@@ -2,6 +2,7 @@ package catgirlemily.trlib;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -22,6 +23,10 @@ public class TREngine {
 	private final Color[][] colorBuffer;
 	private final BufferedWriter out;
 
+	public static InputStream input = System.in;
+
+	public static boolean IsOnWindows = false;
+
 	private String windowName = "Trlib Engine";
 	private int currentBgColor = 0; // Default: Black
 	private int currentFgColor = 7; // Default: White
@@ -41,7 +46,23 @@ public class TREngine {
 		this.out = new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
 
 		// Enable Virtual Terminal Processing for Windows
-		WindowsAnsiEnabler.enable();
+		if(System.getProperty("os.name").toLowerCase().contains("win")) { IsOnWindows = true; }
+
+		if(IsOnWindows) {
+			WindowsAnsiEnabler.enable();
+		}
+		else {
+			try {
+				// NOTE: Floping wierd way of enableing raw mode in java
+				Runtime.getRuntime().exec(new String[]{"sh", "-c", "stty -icanon -echo min 1 < /dev/tty"}).waitFor();
+			}
+			catch(IOException e) {
+
+			}
+			catch(InterruptedException ee) {
+
+			}
+		}
 		
 		// Initial setup using engine utilities
 		clearTerminal();
@@ -132,6 +153,19 @@ public class TREngine {
 	 * Restores terminal state before closing.
 	 */
 	public void stop() {
+		if(!IsOnWindows) {
+			try {
+				// NOTE: Floping wierd way of disablaying raw mode in java
+				Runtime.getRuntime().exec(new String[]{"sh", "-c", "stty sane < /dev/tty"}).waitFor();
+			}
+			catch(IOException e) {
+
+			}
+			catch(InterruptedException ee) {
+
+			}
+		}
+
 		setCursorVisible(true);
 		resetStyles();
 	}
