@@ -2,7 +2,6 @@ package catgirlemily.demo;
 
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.Trlib;
-import catgirlemily.trlib.drawable.StyledRect;
 import catgirlemily.trlib.types.Vector2;
 
 public class InputTest extends Trlib {

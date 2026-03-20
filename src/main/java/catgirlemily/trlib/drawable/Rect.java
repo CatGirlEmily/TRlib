@@ -5,6 +5,9 @@ import catgirlemily.trlib.core.Drawable;
 import catgirlemily.trlib.types.Vector2;
 import catgirlemily.trlib.util.Pattern;
 
+/**
+ * Rect - A basic rectangle composed of four Line objects.
+ */
 public class Rect implements Drawable {
     protected final Vector2 v1, v2;
     protected int lineWidth;
@@ -19,34 +22,38 @@ public class Rect implements Drawable {
         this.pattern = pattern;
     }
 
+    /** Fluent API to enable and set filling pattern. */
     public Rect withFilled(boolean filled, String fillPattern) {
         this.filled = filled;
         this.fillPattern = fillPattern;
         return this;
     }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// Render Methods \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public void draw(TREngine renderer) {
-        if (filled) {
-            drawFill(renderer);
-        }
+        if (filled) drawFill(renderer);
 
         Vector2 topRight = new Vector2(v2.x(), v1.y());
         Vector2 bottomLeft = new Vector2(v1.x(), v2.y());
 
+        // Composing rectangle out of 4 lines
         new Line(v1, topRight, pattern, lineWidth).draw(renderer);
         new Line(bottomLeft, v2, pattern, lineWidth).draw(renderer);
         new Line(v1, bottomLeft, pattern, lineWidth).draw(renderer);
         new Line(topRight, v2, pattern, lineWidth).draw(renderer);
     }
 
+    /** Iterates through the area and fills it with the chosen pattern. */
     protected void drawFill(TREngine renderer) {
         int minX = Math.min(v1.x(), v2.x());
         int maxX = Math.max(v1.x(), v2.x());
         int minY = Math.min(v1.y(), v2.y());
         int maxY = Math.max(v1.y(), v2.y());
 
-        // Tworzymy jeden iterator na całe wypełnienie
         Pattern it = new Pattern(fillPattern);
 
         for (int y = minY; y <= maxY; y++) {

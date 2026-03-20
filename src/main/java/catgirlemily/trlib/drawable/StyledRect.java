@@ -4,6 +4,10 @@ import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.types.Vector2;
 import catgirlemily.trlib.util.Pattern;
 
+/**
+ * StyledRect - Specialized rectangle allowing different patterns for each side and corner.
+ * Useful for GUI boxes with box-drawing characters (╔═╗).
+ */
 public class StyledRect extends Rect {
     private String tl = "+", tr = "+", bl = "+", br = "+";
     private String top = "-", bottom = "-", left = "|", right = "|";
@@ -32,6 +36,7 @@ public class StyledRect extends Rect {
         int minY = Math.min(v1.y(), v2.y());
         int maxY = Math.max(v1.y(), v2.y());
 
+        // Draw horizontal edges
         Pattern topP = new Pattern(top);
         Pattern botP = new Pattern(bottom);
         for (int x = minX + 1; x < maxX; x++) {
@@ -39,6 +44,7 @@ public class StyledRect extends Rect {
             renderer.drawPoint(x, maxY, botP.next());
         }
 
+        // Draw vertical edges
         Pattern leftP = new Pattern(left);
         Pattern rightP = new Pattern(right);
         for (int y = minY + 1; y < maxY; y++) {
@@ -46,7 +52,7 @@ public class StyledRect extends Rect {
             renderer.drawPoint(maxX, y, rightP.next());
         }
 
-
+        // Draw individual corners
         renderer.drawPoint(minX, minY, new Pattern(tl).next());
         renderer.drawPoint(maxX, minY, new Pattern(tr).next());
         renderer.drawPoint(minX, maxY, new Pattern(bl).next());

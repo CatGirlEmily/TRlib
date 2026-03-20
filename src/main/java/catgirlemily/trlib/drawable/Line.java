@@ -5,6 +5,10 @@ import catgirlemily.trlib.core.Drawable;
 import catgirlemily.trlib.types.Vector2;
 import catgirlemily.trlib.util.Pattern;
 
+/**
+ * Line - Draws a line between two points using Bresenham's algorithm.
+ * Supports patterns and line thickness.
+ */
 public class Line implements Drawable {
     private final Vector2 v1, v2;
     private final String pattern;
@@ -17,17 +21,25 @@ public class Line implements Drawable {
         this.width = width;
     }
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////// Draw Logic \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public void draw(TREngine renderer) {
-        // Tworzymy JEDEN iterator na całą operację rysowania linii
         Pattern it = new Pattern(pattern);
         
+        // Handles line thickness by shifting the Bresenham calculation
         int startOffset = -(width / 2);
         for (int w = 0; w < width; w++) {
             drawBresenham(renderer, it, startOffset + w);
         }
     }
 
+    /**
+     * Classic Bresenham's Line Algorithm.
+     * Efficiently calculates points of a line using only integer addition/subtraction.
+     */
     private void drawBresenham(TREngine renderer, Pattern it, int yOffset) {
         int x1 = v1.x();
         int y1 = v1.y() + yOffset;
