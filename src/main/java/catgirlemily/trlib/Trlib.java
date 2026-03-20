@@ -25,10 +25,16 @@ public abstract class Trlib {
 /////////////////////////////////// Abstract Hooks \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-    /** Called once per frame to update game logic. @param delta Time since last frame in seconds. */
+    /**
+     * Called once per frame to update game logic.
+     * @param delta Time since last frame in seconds.
+     */
     public abstract void onUpdate(double delta);
 
-    /** Called once per frame to draw objects into the buffer. @param renderer The active engine. */
+    /** 
+     * Called once per frame to draw objects into the buffer.
+     * @param renderer The active engine.
+    */
     public abstract void onRender(TREngine renderer);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
