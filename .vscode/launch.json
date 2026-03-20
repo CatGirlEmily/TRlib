@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MyGame",
+            "request": "launch",
+            "mainClass": "catgirlemily.demo.MyGame",
+            "projectName": "trlib"
+        },
+        {
+            "type": "java",
             "name": "AnsiTest",
             "request": "launch",
             "mainClass": "catgirlemily.demo.AnsiTest",

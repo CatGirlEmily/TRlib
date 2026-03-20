@@ -1,5 +1,7 @@
 package catgirlemily.demo;
 
+import java.util.Random;
+
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.core.Trlib;
 import catgirlemily.trlib.drawable.Sprite;
@@ -7,32 +9,22 @@ import catgirlemily.trlib.drawable.Rect;
 import catgirlemily.trlib.type.Color;
 import catgirlemily.trlib.type.Vector2;
 
-/**
- * MyGame - Finalna implementacja Twojej gry w terminalu.
- */
 public class MyGame extends Trlib {
     private Sprite player;
     private Vector2 playerPos;
 
-    // Współrzędne double dla płynnego ruchu
     private double preciseX = 10.0;
     private double preciseY = 10.0;
-    
-    // Prędkość: 30 znaków na sekundę
     private final double speed = 30.0;
 
     public MyGame() {
-        // Okno 120x40, 60 FPS
-        super(140, 40, 60);
+        // Zwiększyłeś okno do 140 w super(), więc Rect też powinien to uwzględniać
+        super(150, 40, 30);
 
-        // Inicjalizacja pozycji
         playerPos = new Vector2((int)preciseX, (int)preciseY);
-
-        // Ładowanie obrazka (Resource path)
         player = new Sprite("src/main/resources/sss.png", playerPos, 16, 8);
         
-        System.out.println("--- Gra wystartowała ---");
-        System.out.println("Sterowanie: WSAD | Wyjście: Ctrl+C");
+        System.out.println("--- Gra wystartowała (WinAPI Input) ---");
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,26 +32,49 @@ public class MyGame extends Trlib {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onUpdate(double delta) {
+    public void onUpdate(TREngine renderer, double delta) {
+        renderer.setWindowName("x: " + preciseX);
+        //renderer.setWidth(new Random().nextInt(150));
+        //renderer.setHeight(new Random().nextInt(40));
+        renderer.setBackgroundColor(5);
+        renderer.setForegroundColor(1);
+        
         boolean moved = false;
 
-        // Sprawdzanie klawiszy przez Raw Mode (z klasy Trlib)
-        if (isKeyPressed('W')) { preciseY -= speed * delta; moved = true; }
-        if (isKeyPressed('S')) { preciseY += speed * delta; moved = true; }
-        if (isKeyPressed('A')) { preciseX -= speed * delta; moved = true; }
-        if (isKeyPressed('D')) { preciseX += speed * delta; moved = true; }
+        // Używamy Virtual Key Codes (WinAPI) dla stabilności
+        // 0x57 = W, 0x53 = S, 0x41 = A, 0x44 = D
+        if (isKeyPressed(0x57)) { preciseY -= speed * delta; moved = true; }
+        if (isKeyPressed(0x53)) { preciseY += speed * delta; moved = true; }
+        if (isKeyPressed(0x41)) { preciseX -= speed * delta; moved = true; }
+        if (isKeyPressed(0x44)) { preciseX += speed * delta; moved = true; }
 
-        // Ograniczenie gracza do granic ekranu (Collision Window)
+        // Kolizje (zakładając rozmiar okna 140x40 i sprite 16x8)
         if (preciseX < 1) preciseX = 1;
         if (preciseY < 1) preciseY = 1;
-        if (preciseX > 120 - 16) preciseX = 120 - 16; // Szerokość okna - szerokość sprite
-        if (preciseY > 40 - 8) preciseY = 40 - 8;  // Wysokość okna - wysokość sprite
+        if (preciseX > 140 - 17) preciseX = 140 - 17; 
+        if (preciseY > 40 - 9) preciseY = 40 - 9;
 
-        // Jeśli nastąpił ruch, aktualizujemy Vector2 dla renderera
-        if (moved) {
             playerPos.setX((int) Math.round(preciseX));
             playerPos.setY((int) Math.round(preciseY));
             player.setPosition(playerPos);
+        };
+
+
+    /**
+     * Nowa metoda wywoływana JEDNORAZOWO przy naciśnięciu.
+     */
+    @Override
+    public void onKeyPress(int keyCode) {
+        // Przykład: Spacja (0x20) zmienia pozycję na środek
+        if (keyCode == 0x20) {
+            preciseX = 60;
+            preciseY = 15;
+            System.out.println("Teleportacja na środek!");
+        }
+
+        // Escape (0x1B) zamyka grę
+        if (keyCode == 0x1B) {
+            stop();
         }
     }
 
@@ -69,24 +84,15 @@ public class MyGame extends Trlib {
 
     @Override
     public void onRender(TREngine renderer) {
-        // 1. Rysujemy ramkę świata (StyledRect/Rect)
-        // Używamy CYAN do obramowania, spacji jako wzoru
-        new Rect(new Vector2(0, 0), new Vector2(119, 39), 1, "█")
+        // Rysujemy tło dopasowane do 140x40
+        new Rect(new Vector2(0, 0), new Vector2(139, 39), 1, "█")
                 .withColor(Color.CYAN)
                 .draw(renderer);
 
-        // 2. Rysujemy gracza (Sprite)
         player.draw(renderer);
-        
-        // 3. Prosty Debug Info (opcjonalnie)
-        // Możesz dodać rysowanie punktu z kolorem białym jako prymitywny tekst:
-        // renderer.drawPoint(2, 1, 'X', Color.WHITE);
-        // renderer.drawPoint(3, 1, ':', Color.WHITE);
-        // renderer.drawPoint(5, 1, (char)('0' + (playerPos.x()/10)), Color.WHITE);
     }
 
     public static void main(String[] args) {
-        // Uruchomienie pętli start() z Trlib
         new MyGame().start();
     }
 }

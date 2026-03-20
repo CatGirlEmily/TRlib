@@ -20,7 +20,7 @@ public class ClockDemo extends Trlib {
     }
 
     @Override
-    public void onUpdate(double delta) {
+    public void onUpdate(TREngine renderer, double delta) {
         // Zwiększamy kąt o prędkość pomnożoną przez delta (czas klatki)
         angle += rotationSpeed * 0.1;
 
@@ -28,6 +28,10 @@ public class ClockDemo extends Trlib {
         if (angle > Math.PI * 2) {
             angle -= Math.PI * 2;
         }
+    }
+    @Override
+    public void onKeyPress(int vKey) {
+
     }
 
     @Override

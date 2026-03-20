@@ -5,7 +5,7 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.IntByReference;
 
-public class WindowsAnsi {
+public class WindowsAnsiEnabler {
     private interface Kernel32 extends Library {
         Kernel32 INSTANCE = Native.load("kernel32", Kernel32.class);
         Pointer GetStdHandle(int nStdHandle);
