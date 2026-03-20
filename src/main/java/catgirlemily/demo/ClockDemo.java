@@ -15,7 +15,7 @@ public class ClockDemo extends Trlib {
 
     // Parametry ekranu zgodnie z prośbą: 150x55, 60 FPS
     public ClockDemo() { 
-        super(140, 55, 60); 
+        super(210, 55, 60); 
     }
 
     @Override

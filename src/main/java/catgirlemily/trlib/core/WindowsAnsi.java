@@ -1,4 +1,4 @@
-package catgirlemily.trlib.util;
+package catgirlemily.trlib.core;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
