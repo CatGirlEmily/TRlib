@@ -1,34 +1,37 @@
 package catgirlemily.trlib.type;
 
 /**
- * ColorType - Enum representing available ANSI colors.
+ * Color - Represents ANSI colors. 
+ * Changed from enum to class to support both standard and dynamic RGB colors.
  */
-public enum Color {
-    // Standard 8-16 colors
-    RESET("\033[0m"),
-    WHITE("\033[37m"),
-    RED("\033[31m"),
-    GREEN("\033[32m"),
-    BLUE("\033[34m"),
-    YELLOW("\033[33m"),
-    CYAN("\033[36m"),
-    MAGENTA("\033[35m"),
+public final class Color {
+    // Standard 8-16 colors (Static Constants)
+    public static final Color RESET = new Color("\033[0m");
+    public static final Color WHITE = new Color("\033[37m");
+    public static final Color RED = new Color("\033[31m");
+    public static final Color GREEN = new Color("\033[32m");
+    public static final Color BLUE = new Color("\033[34m");
+    public static final Color YELLOW = new Color("\033[33m");
+    public static final Color CYAN = new Color("\033[36m");
+    public static final Color MAGENTA = new Color("\033[35m");
     
     // Bright variants
-    BRIGHT_RED("\033[91m"),
-    BRIGHT_GREEN("\033[92m");
+    public static final Color BRIGHT_RED = new Color("\033[91m");
+    public static final Color BRIGHT_GREEN = new Color("\033[92m");
 
     private final String ansiCode;
 
-    Color(String ansiCode) {
+    // Private constructor: only constants or rgb() can create colors
+    private Color(String ansiCode) {
         this.ansiCode = ansiCode;
     }
 
     /**
-     * Helper to create custom RGB colors on the fly
+     * Helper to create custom RGB colors on the fly.
+     * Essential for PNG texture rendering.
      */
-    public static String rgb(int r, int g, int b) {
-        return String.format("\033[38;2;%d;%d;%dm", r, g, b);
+    public static Color rgb(int r, int g, int b) {
+        return new Color(String.format("\033[38;2;%d;%d;%dm", r, g, b));
     }
 
 ////////////////////////////////////////////////////////////////////////

@@ -1,7 +1,7 @@
 package catgirlemily.demo;
 
 import catgirlemily.trlib.TREngine;
-import catgirlemily.trlib.Trlib;
+import catgirlemily.trlib.core.Trlib;
 import catgirlemily.trlib.drawable.Rect;
 import catgirlemily.trlib.drawable.StyledRect;
 import catgirlemily.trlib.type.Vector2;

@@ -6,8 +6,6 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import javax.swing.plaf.synth.ColorType;
-
 import catgirlemily.trlib.core.WindowsAnsi;
 import catgirlemily.trlib.type.Color;
 import catgirlemily.trlib.type.Vector2;

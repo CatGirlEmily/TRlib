@@ -10,7 +10,7 @@ public class WindowsAnsi {
         Kernel32 INSTANCE = Native.load("kernel32", Kernel32.class);
         Pointer GetStdHandle(int nStdHandle);
         boolean GetConsoleMode(Pointer hConsoleHandle, IntByReference lpMode);
-        boolean SetConsoleMode(Pointer hConsoleHandle, int dwMode);
+        boolean SetConsoleMode(Pointer hConsoleHandle, int dwxMode);
     }
 
     public static void enable() {
