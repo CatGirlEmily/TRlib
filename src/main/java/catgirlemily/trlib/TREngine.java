@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.util.WindowsAnsi;
 
 public class TREngine {
     private int fps;
@@ -14,6 +15,7 @@ public class TREngine {
     private int height;
     private final char[][] buffer;
     private final BufferedWriter out;
+
     
     /**
      * new TREngine constructor
@@ -27,6 +29,7 @@ public class TREngine {
         this.fps = fps;
         this.buffer = new char[height][width];
         this.out = new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_16));
+        WindowsAnsi.enable();
         clear();
     }
 
