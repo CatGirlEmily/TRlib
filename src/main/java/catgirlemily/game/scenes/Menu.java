@@ -12,6 +12,7 @@ public class Menu implements Scene {
         this.game = game;
     }
 
+    
     @Override
     public void init() {}
 
