@@ -100,7 +100,6 @@ public class TREngine {
         try {
             // Reset cursor to home position
             out.write("\033[H");
-            setCursorVisible(false);
 
             for (int y = 0; y < height; y++) {
                 Color lastColor = Color.RESET;

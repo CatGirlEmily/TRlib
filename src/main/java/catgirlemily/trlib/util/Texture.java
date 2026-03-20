@@ -16,7 +16,7 @@ public class Texture {
     private final Map<String, Pixel[][]> cache = new HashMap<>();
     
     // Znaki od najciemniejszego do najjaśniejszego
-    private static final String RAMP = " .:-=+*#%@";
+    private static final String RAMP = " @";
 
     public static Texture get() {
         if (instance == null) instance = new Texture();
