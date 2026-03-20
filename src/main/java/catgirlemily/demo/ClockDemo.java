@@ -3,7 +3,7 @@ package catgirlemily.demo;
 import catgirlemily.trlib.Trlib;
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.drawable.Line;
-import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.type.Vector2;
 
 
 //
@@ -15,7 +15,7 @@ public class ClockDemo extends Trlib {
 
     // Parametry ekranu zgodnie z prośbą: 150x55, 60 FPS
     public ClockDemo() { 
-        super(210, 55, 60); 
+        super(210, 55, 60);
     }
 
     @Override

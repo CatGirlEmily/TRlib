@@ -6,8 +6,11 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import javax.swing.plaf.synth.ColorType;
+
 import catgirlemily.trlib.core.WindowsAnsi;
-import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.type.Color;
+import catgirlemily.trlib.type.Vector2;
 
 /**
  * TREngine - Core rendering engine for terminal-based graphics.
@@ -17,9 +20,10 @@ public class TREngine {
     private int fps;
     private int width;
     private int height;
-    private final char[][] buffer;
+    private final char[][] charBuffer;
+    private final Color[][] colorBuffer;
+
     private final BufferedWriter out;
-    private boolean isCursorHidden = false;
 
     /**
      * Initialize the engine with terminal dimensions and target refresh rate.
@@ -31,12 +35,12 @@ public class TREngine {
         this.width = width;
         this.height = height;
         this.fps = fps;
-        this.buffer = new char[height][width];
+        this.charBuffer = new char[height][width];
+        this.colorBuffer = new Color[height][width];
         
-        // StandardCharsets.UTF_16 allows rendering of special box-drawing characters
-        this.out = new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_16));
+        this.out = new BufferedWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8));
 
-        // Enable Virtual Terminal Processing (Windows 10+)
+        // virtual terminal processing
         WindowsAnsi.enable();
         
         // Initial screen setup: Clear screen and move to home (0,0)
@@ -54,17 +58,18 @@ public class TREngine {
      * Draws a single character at specified coordinates.
      * Includes bounds checking to prevent ArrayOutOfBounds exceptions.
      */
-    public void drawPoint(int x, int y, char character) {
+    public void drawPoint(int x, int y, char character, Color color) {
         if (x >= 0 && x < width && y >= 0 && y < height) {
-            buffer[y][x] = character;
+            charBuffer[y][x] = character;
+            colorBuffer[y][x] = (color == null) ? Color.RESET : color;
         }
     }
 
     /**
      * Draws a single character using a Vector2 position.
      */
-    public void drawPoint(Vector2 vector2, char character) {
-        drawPoint(vector2.x(), vector2.y(), character);
+    public void drawPoint(Vector2 vector2, char character, Color color) {
+        drawPoint(vector2.x(), vector2.y(), character, color);
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -77,7 +82,8 @@ public class TREngine {
      */
     public void clear() {
         for (int i = 0; i < height; i++) {
-            Arrays.fill(buffer[i], ' ');
+            Arrays.fill(charBuffer[i], ' ');
+            Arrays.fill(colorBuffer[i], Color.RESET);
         }
     }
 
@@ -87,18 +93,33 @@ public class TREngine {
      */
     public void display() {
         try {
-            // Hide cursor once during the first render call
-            if (!isCursorHidden) {
-                out.write("\033[?25l");
-                isCursorHidden = true;
-            }
+            // hide cursor
+            out.write("\033[?25l");
 
             // Move cursor to top-left corner (Home)
             out.write("\033[H");
 
             // Write all rows from the buffer
             for (int y = 0; y < height; y++) {
-                out.write(buffer[y]);
+                Color lastColor = Color.RESET;
+
+                for (int x = 0; x < width; x++) {
+                    Color currentColor = colorBuffer[y][x];
+
+                    // Optimize: change color only when necessary
+                    if (currentColor != lastColor) {
+                        out.write(currentColor.getAnsiCode());
+                        lastColor = currentColor;
+                    }
+                    
+                    out.write(charBuffer[y][x]);
+                }
+
+                // Reset color at the end of each line to prevent bleeding
+                if (lastColor != Color.RESET) {
+                    out.write(Color.RESET.getAnsiCode());
+                }
+                
                 out.write("\n");
             }
 

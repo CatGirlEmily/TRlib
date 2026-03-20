@@ -2,23 +2,31 @@ package catgirlemily.trlib.drawable;
 
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.core.Drawable;
-import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.type.Vector2;
+import catgirlemily.trlib.type.Color;
 import catgirlemily.trlib.util.Pattern;
 
 /**
  * Line - Draws a line between two points using Bresenham's algorithm.
- * Supports patterns and line thickness.
+ * Supports patterns, line thickness and ANSI colors.
  */
 public class Line implements Drawable {
     private final Vector2 v1, v2;
     private final String pattern;
     private final int width;
+    private Color color = Color.RESET;
 
     public Line(Vector2 v1, Vector2 v2, String pattern, int width) {
         this.v1 = v1;
         this.v2 = v2;
         this.pattern = pattern;
         this.width = width;
+    }
+
+    /** Sets the color of the line and returns this instance. */
+    public Line withColor(Color color) {
+        this.color = color;
+        return this;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +61,8 @@ public class Line implements Drawable {
         int err = dx - dy;
 
         while (true) {
-            renderer.drawPoint(x1, y1, it.next());
+            // Draw point with the current pattern character and selected color
+            renderer.drawPoint(x1, y1, it.next(), color);
 
             if (x1 == x2 && y1 == y2) break;
 

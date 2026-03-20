@@ -1,6 +1,6 @@
 package catgirlemily.trlib.util;
 
-import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.type.Vector2;
 
 public class AABB {
     /**

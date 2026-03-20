@@ -2,7 +2,8 @@ package catgirlemily.trlib.drawable;
 
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.core.Drawable;
-import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.type.Color;
+import catgirlemily.trlib.type.Vector2;
 import catgirlemily.trlib.util.Pattern;
 
 /**
@@ -58,7 +59,7 @@ public class Rect implements Drawable {
 
         for (int y = minY; y <= maxY; y++) {
             for (int x = minX; x <= maxX; x++) {
-                renderer.drawPoint(x, y, it.next());
+                renderer.drawPoint(x, y, it.next(), Color.BLUE);
             }
         }
     }

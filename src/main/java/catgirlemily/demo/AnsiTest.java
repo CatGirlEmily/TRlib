@@ -2,17 +2,23 @@ package catgirlemily.demo;
 
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.Trlib;
+import catgirlemily.trlib.drawable.Rect;
 import catgirlemily.trlib.drawable.StyledRect;
-import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.type.Vector2;
 
 public class AnsiTest extends Trlib {
+    private int x = 0;
+    private int dir = 0;
     private char character = ' ';
     private final Vector2 v = new Vector2(20,20);
 
-    public AnsiTest() { super(140, 55, 60); }
+    public AnsiTest() { super(210, 55, 60); }
 
     @Override
     public void onUpdate(double delta) {
+        if (x >= 70) dir = -1;
+        if (x <= 0) dir = 1;
+        x += dir;
     }
 
     public static void testAnsi() {
@@ -22,7 +28,7 @@ public class AnsiTest extends Trlib {
 
     @Override
     public void onRender(TREngine renderer) {
-        testAnsi();
+        new Rect(new Vector2(x,0), new Vector2(130+x,50), 2, "seks").withFilled(true, "penis").draw(renderer);
     }
         
     public static void main(String[] args) {

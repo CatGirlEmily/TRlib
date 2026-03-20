@@ -1,7 +1,8 @@
 package catgirlemily.trlib.drawable;
 
 import catgirlemily.trlib.TREngine;
-import catgirlemily.trlib.types.Vector2;
+import catgirlemily.trlib.type.Color;
+import catgirlemily.trlib.type.Vector2;
 import catgirlemily.trlib.util.Pattern;
 
 /**
@@ -40,22 +41,22 @@ public class StyledRect extends Rect {
         Pattern topP = new Pattern(top);
         Pattern botP = new Pattern(bottom);
         for (int x = minX + 1; x < maxX; x++) {
-            renderer.drawPoint(x, minY, topP.next());
-            renderer.drawPoint(x, maxY, botP.next());
+            renderer.drawPoint(x, minY, topP.next(),Color.BLUE);
+            renderer.drawPoint(x, maxY, botP.next(),Color.BLUE);
         }
 
         // Draw vertical edges
         Pattern leftP = new Pattern(left);
         Pattern rightP = new Pattern(right);
         for (int y = minY + 1; y < maxY; y++) {
-            renderer.drawPoint(minX, y, leftP.next());
-            renderer.drawPoint(maxX, y, rightP.next());
+            renderer.drawPoint(minX, y, leftP.next(), Color.BLUE);
+            renderer.drawPoint(maxX, y, rightP.next(), Color.BLUE);
         }
 
         // Draw individual corners
-        renderer.drawPoint(minX, minY, new Pattern(tl).next());
-        renderer.drawPoint(maxX, minY, new Pattern(tr).next());
-        renderer.drawPoint(minX, maxY, new Pattern(bl).next());
-        renderer.drawPoint(maxX, maxY, new Pattern(br).next());
+        renderer.drawPoint(minX, minY, new Pattern(tl).next(), Color.BLUE);
+        renderer.drawPoint(maxX, minY, new Pattern(tr).next(), Color.BLUE);
+        renderer.drawPoint(minX, maxY, new Pattern(bl).next(), Color.BLUE);
+        renderer.drawPoint(maxX, maxY, new Pattern(br).next(), Color.BLUE);
     }
 }

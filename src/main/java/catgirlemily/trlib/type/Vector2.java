@@ -1,4 +1,4 @@
-package catgirlemily.trlib.types;
+package catgirlemily.trlib.type;
 
 /**
  * Vector2 - Simple immutable record for 2D coordinates.
