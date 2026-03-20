@@ -19,7 +19,7 @@ public class MyGame extends Trlib {
 
     public MyGame() {
         // Zwiększyłeś okno do 140 w super(), więc Rect też powinien to uwzględniać
-        super(150, 40, 30);
+        super(210, 55, 60);
 
         playerPos = new Vector2((int)preciseX, (int)preciseY);
         player = new Sprite("src/main/resources/sss.png", playerPos, 16, 8);
@@ -36,8 +36,8 @@ public class MyGame extends Trlib {
         renderer.setWindowName("x: " + preciseX);
         //renderer.setWidth(new Random().nextInt(150));
         //renderer.setHeight(new Random().nextInt(40));
-        renderer.setBackgroundColor(5);
-        renderer.setForegroundColor(1);
+        //renderer.setBackgroundColor(5);
+        //renderer.setForegroundColor(1);
         
         boolean moved = false;
 
@@ -48,11 +48,7 @@ public class MyGame extends Trlib {
         if (isKeyPressed(0x41)) { preciseX -= speed * delta; moved = true; }
         if (isKeyPressed(0x44)) { preciseX += speed * delta; moved = true; }
 
-        // Kolizje (zakładając rozmiar okna 140x40 i sprite 16x8)
-        if (preciseX < 1) preciseX = 1;
-        if (preciseY < 1) preciseY = 1;
-        if (preciseX > 140 - 17) preciseX = 140 - 17; 
-        if (preciseY > 40 - 9) preciseY = 40 - 9;
+        // Kolizje (zakładając rozmiar okna 140x40 i sprite 16x8); 
 
             playerPos.setX((int) Math.round(preciseX));
             playerPos.setY((int) Math.round(preciseY));
@@ -85,11 +81,8 @@ public class MyGame extends Trlib {
     @Override
     public void onRender(TREngine renderer) {
         // Rysujemy tło dopasowane do 140x40
-        new Rect(new Vector2(0, 0), new Vector2(139, 39), 1, "█")
-                .withColor(Color.CYAN)
-                .draw(renderer);
-
         player.draw(renderer);
+        renderer.drawPoint(new Vector2(10,10), '⡻', Color.BLUE);
     }
 
     public static void main(String[] args) {

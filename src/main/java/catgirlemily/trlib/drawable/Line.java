@@ -23,35 +23,42 @@ public class Line implements Drawable {
         this.width = width;
     }
 
-    /** Sets the color of the line and returns this instance. */
     public Line withColor(Color color) {
         this.color = color;
         return this;
     }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////// Draw Logic \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-/////////////////////////////////////////////////////////////////////////////////////////////
-
     @Override
     public void draw(TREngine renderer) {
         Pattern it = new Pattern(pattern);
         
-        // Handles line thickness by shifting the Bresenham calculation
+        // Calculate the direction of the line to determine thickness orientation
+        int dx = Math.abs(v2.x() - v1.x());
+        int dy = Math.abs(v2.y() - v1.y());
+
         int startOffset = -(width / 2);
+
         for (int w = 0; w < width; w++) {
-            drawBresenham(renderer, it, startOffset + w);
+            int currentOffset = startOffset + w;
+            
+            // Logic fix: 
+            // If the line is more vertical (dy > dx), shift thickness in X axis.
+            // If the line is more horizontal (dx >= dy), shift thickness in Y axis.
+            if (dy > dx) {
+                drawBresenham(renderer, it, currentOffset, 0);
+            } else {
+                drawBresenham(renderer, it, 0, currentOffset);
+            }
         }
     }
 
     /**
-     * Classic Bresenham's Line Algorithm.
-     * Efficiently calculates points of a line using only integer addition/subtraction.
+     * Modified Bresenham's to support X and Y offsets.
      */
-    private void drawBresenham(TREngine renderer, Pattern it, int yOffset) {
-        int x1 = v1.x();
+    private void drawBresenham(TREngine renderer, Pattern it, int xOffset, int yOffset) {
+        int x1 = v1.x() + xOffset;
         int y1 = v1.y() + yOffset;
-        int x2 = v2.x();
+        int x2 = v2.x() + xOffset;
         int y2 = v2.y() + yOffset;
 
         int dx = Math.abs(x2 - x1);
@@ -61,7 +68,6 @@ public class Line implements Drawable {
         int err = dx - dy;
 
         while (true) {
-            // Draw point with the current pattern character and selected color
             renderer.drawPoint(x1, y1, it.next(), color);
 
             if (x1 == x2 && y1 == y2) break;
