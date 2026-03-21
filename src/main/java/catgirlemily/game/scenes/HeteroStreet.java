@@ -7,7 +7,6 @@ import catgirlemily.game.core.NPC;
 import catgirlemily.game.core.Player;
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.TREngine;
-import catgirlemily.trlib.core.Trlib;
 import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.Color;
 import catgirlemily.trlib.type.Vector2;
@@ -86,10 +85,8 @@ public class HeteroStreet implements Scene {
         );
 
         // Check collision with the traffic car
-        if (AABB.check(pTopLeft, player.getHitbox(), 
-                       new Vector2((int)trafficCar.getX(), (int)trafficCar.getY()), 
-                       trafficCar.getSize())) {
-           // Handle crash (e.g., restart or shutdown prank)
+        if (AABB.check(pTopLeft, player.getHitbox(), new Vector2((int)trafficCar.getX(), (int)trafficCar.getY()), trafficCar.getSize())) {
+			game.setScene(new DeathScreen(game));
         }
     }
 

@@ -1,14 +1,15 @@
 package catgirlemily.game.scenes;
 
 import catgirlemily.trlib.TREngine;
+import catgirlemily.trlib.core.SoundManager;
 import catgirlemily.game.Game;
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.Vector2;
-import catgirlemily.trlib.type.KeyCode;
 
 public class CoolWatermark implements Scene {
     private int frameCounter = 0;
+	private boolean clickCounter = false;
     private final Game game;
     private Sprite[] frames;
     private final Vector2 watermarkV = new Vector2(40,5);
@@ -26,7 +27,7 @@ public class CoolWatermark implements Scene {
     @Override
     public void init() {
         frames = new Sprite[]{ a, b, c, d, e, f };
-
+		SoundManager.play("src/main/resources/sounds/watermark/mniammniam.wav", false);
     }
 
     @Override
@@ -43,6 +44,7 @@ public class CoolWatermark implements Scene {
 
     @Override
     public void onKeyPress(int vKey) {
-        if (KeyCode.fromCode(vKey) == KeyCode.F) frameCounter = 150;
+        if(clickCounter == true) { frameCounter = 150; }
+		clickCounter = true;
     }
 }
