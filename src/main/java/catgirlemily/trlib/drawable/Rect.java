@@ -50,7 +50,7 @@ public class Rect implements Drawable {
 /////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void draw(TREngine renderer) {
+    public Rect draw(TREngine renderer) {
         // 1. Draw fill first (background layer)
         if (filled) drawFill(renderer);
 

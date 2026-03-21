@@ -16,6 +16,7 @@ public class NPC {
     private final Color color;
     private final Sprite exclamationSprite;
     private boolean isPickedUp = false;
+    
 
     // Interaction zone size (area around the NPC where SPACE works)
     private final Vector2 interactionSize = new Vector2(10, 10);
@@ -49,7 +50,7 @@ public class NPC {
             // Perform AABB collision check between Player and Interaction Zone
             if (AABB.check(player.pos, player.getHitbox(), interactionPos, interactionSize)) {
                 isPickedUp = true;
-                if (Game.debug) System.out.println("Passenger picked up!");
+                if (Game.debug) System.out.println("Passenger picked up!"); 
             }
         }
     }

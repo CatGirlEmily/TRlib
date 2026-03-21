@@ -7,6 +7,7 @@ import catgirlemily.game.core.NPC;
 import catgirlemily.game.core.Player;
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.TREngine;
+import catgirlemily.trlib.drawable.Rect;
 import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.Color;
 import catgirlemily.trlib.type.Vector2;
@@ -31,6 +32,9 @@ public class HeteroStreet implements Scene {
     // --- Utility Variables ---
     private int introFrameCounter = 0;
     private double currentDelta = 0;
+
+    Rect NPCborder =  new Rect(new Vector2(100, 15), new Vector2(120, 30), 1, "@");
+
 
     public HeteroStreet(Game game) {
         this.game = game;
@@ -115,8 +119,14 @@ public class HeteroStreet implements Scene {
         backgroundDetail.setPosition(new Vector2(-camX, 0));
         backgroundDetail.draw(renderer);
 
+<<<<<<< Updated upstream
         passengerNpc.render(renderer, camX);
 
+=======
+        if(passengerNpc.isPickedUp()){
+            NPCborder.draw(renderer);
+        }
+>>>>>>> Stashed changes
         // --- LAYER 5: Debug Info ---
         if (Game.debug) {
             renderer.drawString(30, 0, "FPS Delta: " + String.format("%.4f", currentDelta), Color.BRIGHT_GREEN);
