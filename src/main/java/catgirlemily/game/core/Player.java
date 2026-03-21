@@ -17,7 +17,9 @@ public class Player {
     private double localPosY;   // Precise Y coordinate for smooth movement
 
     // --- Assets & Hitboxes ---
-    private final String[] texture = {"src/main/resources/sprites/taxi.png"};
+    private final String[] texture = {"src/main/resources/sprites/taxi.png", 
+                                      "src/main/resources/sprites/taxi_left.png"
+    };
     
     // Different hitboxes based on car orientation
     private final Vector2 hitboxStraight = new Vector2(8, 6);
@@ -25,7 +27,8 @@ public class Player {
     
     private Vector2 currentHitbox;
     private final Sprite spriteStraight;
-    private final Sprite spriteSide;
+    private final Sprite spriteRight;
+    private final Sprite spriteLeft;
     private Sprite currentSprite;
 
     public Player(int startX, int startY) {
@@ -35,10 +38,10 @@ public class Player {
 
         // Initialize sprites for different orientations
         this.spriteStraight = new Sprite(texture[0], pos, hitboxStraight.x(), hitboxStraight.y());
-        this.spriteSide     = new Sprite(texture[0], pos, hitboxSide.x(), hitboxSide.y());
-        
+        this.spriteRight    = new Sprite(texture[0], pos, hitboxSide.x(), hitboxSide.y());
+        this.spriteLeft     = new Sprite(texture[1], pos, hitboxSide.x(), hitboxSide.y());
         // Default state (facing side)
-        this.currentSprite = spriteSide;
+        this.currentSprite = spriteRight;
         this.currentHitbox = hitboxSide;
     }
 
@@ -74,12 +77,12 @@ public class Player {
         // Horizontal Movement (A/D)
         if (game.isKeyDown(KeyCode.A.getCode())) {
             localPosX -= speed;
-            this.currentSprite = spriteSide;
+            this.currentSprite = spriteLeft;
             this.currentHitbox = hitboxSide;
         } 
         else if (game.isKeyDown(KeyCode.D.getCode())) {
             localPosX += speed;
-            this.currentSprite = spriteSide;
+            this.currentSprite = spriteRight;
             this.currentHitbox = hitboxSide;
         } 
 

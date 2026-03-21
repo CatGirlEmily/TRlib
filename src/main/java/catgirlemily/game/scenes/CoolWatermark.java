@@ -10,7 +10,6 @@ import catgirlemily.trlib.type.Vector2;
 
 public class CoolWatermark implements Scene {
     private int frameCounter = 0;
-	private boolean clickCounter = false;
     private final Game game;
     private Sprite[] frames;
     private final Vector2 watermarkV = new Vector2(40,5);

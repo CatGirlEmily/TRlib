@@ -86,6 +86,10 @@ public class HeteroStreet implements Scene {
 
         // Check collision with the traffic car
         if (AABB.check(pTopLeft, player.getHitbox(), new Vector2((int)trafficCar.getX(), (int)trafficCar.getY()), trafficCar.getSize())) {
+            player.canMove = false;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {}
 			game.setScene(new DeathScreen(game));
         }
     }
