@@ -145,6 +145,15 @@ public class TREngine {
     public String getWindowName() { return windowName; }
     public int getBackgroundColor() { return currentBgColor; }
     public int getForegroundColor() { return currentFgColor; }
+    public char getCharAt(int x, int y) {
+        if (x < 0 || x >= width || y < 0 || y >= height) return ' ';
+        return charBuffer[y][x];
+    }
+
+    public Color getColorAt(int x, int y) {
+        if (x < 0 || x >= width || y < 0 || y >= height) return Color.RESET;
+        return colorBuffer[y][x]; // Jeśli masz osobny bufor na kolory
+    }
 
     public void setFps(int newFps)       { this.fps = newFps; }
     public void setWidth(int newWidth)   { this.width = newWidth; }

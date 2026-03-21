@@ -31,6 +31,7 @@ public class CoolWatermark implements Scene {
 
     @Override
     public void update(TREngine renderer, double delta) {
+        frameCounter++;
         if (frameCounter >= 150) game.setScene(new Menu(game));
     }
 
