@@ -40,6 +40,7 @@ public class CarEntity {
         // Apply horizontal movement based on direction and speed
         // To use frame-independent movement: x += direction * speed * delta * 60;
         x += direction * speed;
+<<<<<<< HEAD
 
         // Reset position if car goes off-screen (World Wrap)
         // Adjust '420' based on your specific map width if needed
@@ -48,6 +49,9 @@ public class CarEntity {
         } else if (direction == 1 && x > 420) {
             x = -size.x();
         }
+=======
+        if(x < -12) x = 420;
+>>>>>>> 5571b7a7d519fb522f162706f96356f3ae576422
     }
 
     /**
@@ -68,4 +72,8 @@ public class CarEntity {
     public double getX() { return x; }
     public double getY() { return y; }
     public Vector2 getSize() { return size; }
+
+    public void setPos(int x, int y) {
+        sprite.setPosition(new Vector2(x, y));
+    }
 }

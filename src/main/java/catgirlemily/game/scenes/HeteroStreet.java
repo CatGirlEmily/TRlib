@@ -5,8 +5,13 @@ import catgirlemily.game.core.Camera;
 import catgirlemily.game.core.CarEntity;
 import catgirlemily.game.core.NPC;
 import catgirlemily.game.core.Player;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5571b7a7d519fb522f162706f96356f3ae576422
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.TREngine;
+import catgirlemily.trlib.core.Trlib;
 import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.Color;
 import catgirlemily.trlib.type.Vector2;
@@ -15,6 +20,7 @@ import catgirlemily.trlib.util.AABB;
 public class HeteroStreet implements Scene {
     // --- Engine Core & Map Settings ---
     private final Game game;
+<<<<<<< HEAD
     private final Camera camera = new Camera();
     private final int mapWidth = 420;
     private final int mapHeight = 55;
@@ -31,6 +37,17 @@ public class HeteroStreet implements Scene {
     // --- Utility Variables ---
     private int introFrameCounter = 0;
     private double currentDelta = 0;
+=======
+    private Player player;
+    private Sprite bg, bg2;
+    private CarEntity a,b,c;
+    private final int width = 420;
+    private final int height = 55;
+    private int autoMove = 0;
+    private Camera camera = new Camera();   
+    // Offset
+    private int cameraX = 0;
+>>>>>>> 5571b7a7d519fb522f162706f96356f3ae576422
 
     public HeteroStreet(Game game) {
         this.game = game;
@@ -71,9 +88,14 @@ public class HeteroStreet implements Scene {
         // Clamp Y position to stay within the road lanes
         if (player.pos.y() > 36) player.setAllY(36);
         if (player.pos.y() < 27) player.setAllY(27);
+<<<<<<< HEAD
         
         // 4. Camera: Follow player (must be called after player movement)
         camera.update(player.pos, mapWidth, renderer.getWidth());
+=======
+  
+        camera.update(player.pos, width, renderer.getWidth());
+>>>>>>> 5571b7a7d519fb522f162706f96356f3ae576422
         
         // 5. Interaction Logic: Check if player picks up the passenger
         passengerNpc.checkPickup(player, game);
