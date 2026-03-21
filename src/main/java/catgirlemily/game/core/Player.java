@@ -8,14 +8,18 @@ import catgirlemily.trlib.type.Vector2;
 import catgirlemily.trlib.util.Clamp;
 
 public class Player {
-    public Vector2 pos;
+    // --- Public Fields ---
+    public Vector2 pos;         // Rounded position used for rendering/physics
     public boolean canMove = true;
 
-    private double localPosX;
-    private double localPosY;
+    // --- Internal State ---
+    private double localPosX;   // Precise X coordinate for smooth movement
+    private double localPosY;   // Precise Y coordinate for smooth movement
 
+    // --- Assets & Hitboxes ---
     private final String[] texture = {"src/main/resources/sprites/car0_0.png"};
     
+    // Different hitboxes based on car orientation
     private final Vector2 hitboxStraight = new Vector2(8, 6);
     private final Vector2 hitboxSide     = new Vector2(12, 4);
     
@@ -29,24 +33,35 @@ public class Player {
         this.localPosY = startY;
         this.pos = new Vector2(startX, startY);
 
+        // Initialize sprites for different orientations
         this.spriteStraight = new Sprite(texture[0], pos, hitboxStraight.x(), hitboxStraight.y());
         this.spriteSide     = new Sprite(texture[0], pos, hitboxSide.x(), hitboxSide.y());
         
+        // Default state (facing side)
         this.currentSprite = spriteSide;
         this.currentHitbox = hitboxSide;
     }
 
-    public void handleInput(Game game, int width, int height) {
+    /**
+     * Handles movement input, diagonal normalization, and world boundaries.
+     */
+    public void handleInput(Game game, int worldWidth, int worldHeight) {
         if (!canMove) return;
 
+        // Determine base speed (debug sprint included)
         double speed = Game.debug && game.isKeyDown(KeyCode.SHIFT.getCode()) ? 5 : 2;
-        if ((game.isKeyDown(KeyCode.W.getCode()) || game.isKeyDown(KeyCode.S.getCode())) && 
-            (game.isKeyDown(KeyCode.A.getCode()) || game.isKeyDown(KeyCode.D.getCode()))) {
-            speed = speed / 1.5;
+
+        // Normalize speed for diagonal movement (prevents moving faster when holding two keys)
+        boolean movingVertical = game.isKeyDown(KeyCode.W.getCode()) || game.isKeyDown(KeyCode.S.getCode());
+        boolean movingHorizontal = game.isKeyDown(KeyCode.A.getCode()) || game.isKeyDown(KeyCode.D.getCode());
+        
+        if (movingVertical && movingHorizontal) {
+            speed /= 1.5; 
         }
 
+        // Vertical Movement (W/S)
         if (game.isKeyDown(KeyCode.W.getCode())) {
-            localPosY -= speed / 2; // match the screen ratio (2:1)
+            localPosY -= speed / 2; // Compensate for 2:1 terminal/screen ratio
             this.currentSprite = spriteStraight;
             this.currentHitbox = hitboxStraight;
         }
@@ -56,6 +71,7 @@ public class Player {
             this.currentHitbox = hitboxStraight;
         }
         
+        // Horizontal Movement (A/D)
         if (game.isKeyDown(KeyCode.A.getCode())) {
             localPosX -= speed;
             this.currentSprite = spriteSide;
@@ -67,32 +83,42 @@ public class Player {
             this.currentHitbox = hitboxSide;
         } 
 
-        // dziala tak sobie ale ok
-        // na drugim pikselu out of bounds przeniesienie do nastepnej sceny
-        localPosX = Clamp.clamp(localPosX, 4.0, width - 4.0);
-        localPosY = Clamp.clamp(localPosY, 1.0, height - 1.0);
+        // Apply world boundaries (Clamping)
+        localPosX = Clamp.clamp(localPosX, 4.0, worldWidth - 4.0);
+        localPosY = Clamp.clamp(localPosY, 1.0, worldHeight - 1.0);
         
+        // Update the public Vector2 with rounded values for the engine
         this.pos = new Vector2((int) Math.round(localPosX), (int) Math.round(localPosY));
     }
 
+    /**
+     * Used for collision detection (AABB).
+     */
     public Vector2 getHitbox() {
         return currentHitbox;
     }
 
+    /**
+     * Renders the player centered at its current position.
+     */
     public void render(TREngine renderer) {
         if (Game.debug) {
-            renderer.drawString(0, 0, String.format("Local X: %.1f Y: %.1f | Render X: %d", localPosX, localPosY, pos.x()), null);
+            String debugInfo = String.format("LX: %.1f LY: %.1f | RX: %d", localPosX, localPosY, pos.x());
+            renderer.drawString(0, 0, debugInfo, null);
         }
         
         int currentW = currentHitbox.x();
         int currentH = currentHitbox.y();
         
+        // Center the sprite (Anchor point calculation)
         int renderX = pos.x() - (currentW / 2);
         int renderY = pos.y() - (currentH / 2);
 
         currentSprite.setPosition(new Vector2(renderX, renderY));
         currentSprite.draw(renderer);
     }
+
+    // --- Helper Setters (Used for Teleportation/Scritped Events) ---
 
     public void setAllX(int newX) {
         pos = new Vector2(newX, pos.y());

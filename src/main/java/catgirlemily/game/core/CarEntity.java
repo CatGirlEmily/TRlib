@@ -4,20 +4,24 @@ import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.Vector2;
 
+/**
+ * CarEntity - Represents AI-controlled traffic vehicles.
+ */
 public class CarEntity {
+    // --- Configuration & State ---
     private double x;
     private double y;
-    private double speed;
-    private int direction; // 1 dla prawo, -1 dla lewo
+    private final double speed;
+    private final int direction; // 1 for Right, -1 for Left
 
     private final Sprite sprite;
     private final Vector2 size = new Vector2(12, 4);
 
     /**
-     * @param x Pozycja startowa X
-     * @param y Pozycja startowa Y
-     * @param speed Prędkość (np. 0.5 lub 1.2)
-     * @param direction 1 dla jazdy w prawo, -1 dla jazdy w lewo
+     * @param x Starting X position (World Space)
+     * @param y Starting Y position (World Space)
+     * @param speed Movement speed (e.g., 0.5 to 1.5)
+     * @param direction 1 for Right, -1 for Left
      */
     public CarEntity(int x, int y, double speed, int direction) {
         this.x = x;
@@ -25,17 +29,33 @@ public class CarEntity {
         this.speed = speed;
         this.direction = direction;
 
+        // Initialize car sprite with defined size
         this.sprite = new Sprite("src/main/resources/sprites/car1_0.png", new Vector2(x, y), size.x(), size.y());
     }
 
+    /**
+     * Updates car position and handles world wrapping/reset.
+     */
     public void update(double delta) {
-        // Ruch poziomy: pozycja += kierunek * prędkość
-        // Jeśli chcesz używać delty: x += direction * speed * delta * 60;
+        // Apply horizontal movement based on direction and speed
+        // To use frame-independent movement: x += direction * speed * delta * 60;
         x += direction * speed;
+
+        // Reset position if car goes off-screen (World Wrap)
+        // Adjust '420' based on your specific map width if needed
+        if (direction == -1 && x < -size.x()) {
+            x = 420; 
+        } else if (direction == 1 && x > 420) {
+            x = -size.x();
+        }
     }
 
+    /**
+     * Renders the car relative to the camera position.
+     * @param cameraX The current horizontal offset of the camera.
+     */
     public void render(TREngine renderer, int cameraX) {
-        // Rysujemy z uwzględnieniem kamery, tak jak gracza
+        // Calculate screen coordinates (World to Screen Space)
         int renderX = (int)Math.round(x) - cameraX;
         int renderY = (int)Math.round(y);
 
@@ -43,7 +63,8 @@ public class CarEntity {
         sprite.draw(renderer);
     }
 
-    // Gettery do kolizji
+    // --- Getters for Collision Detection (AABB) ---
+    
     public double getX() { return x; }
     public double getY() { return y; }
     public Vector2 getSize() { return size; }

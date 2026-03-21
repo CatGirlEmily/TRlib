@@ -3,27 +3,34 @@ package catgirlemily.game.scenes;
 import catgirlemily.game.Game;
 import catgirlemily.game.core.Camera;
 import catgirlemily.game.core.CarEntity;
+import catgirlemily.game.core.NPC;
 import catgirlemily.game.core.Player;
-import catgirlemily.game.core.SystemCommand;
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.drawable.Sprite;
+import catgirlemily.trlib.type.Color;
 import catgirlemily.trlib.type.Vector2;
 import catgirlemily.trlib.util.AABB;
-import catgirlemily.trlib.util.Clamp;
 
 public class HeteroStreet implements Scene {
+    // --- Engine Core & Map Settings ---
     private final Game game;
-    private Player player;
-    private Sprite bg, bg2;
-    private CarEntity a,b,c;
-    private final int width = 420;
-    private final int height = 55;
-    private int autoMove = 0;
-    private Camera camera = new Camera();
+    private final Camera camera = new Camera();
+    private final int mapWidth = 420;
+    private final int mapHeight = 55;
     
-    // Offset
-    private int cameraX = 0;
+    // --- Entity Objects ---
+    private Player player;
+    private CarEntity trafficCar;
+    private NPC passengerNpc;
+    
+    // --- Graphical Layers ---
+    private Sprite backgroundBase;   // Road and pavement
+    private Sprite backgroundDetail; // Street lamps and foreground elements
+    
+    // --- Utility Variables ---
+    private int introFrameCounter = 0;
+    private double currentDelta = 0;
 
     public HeteroStreet(Game game) {
         this.game = game;
@@ -31,58 +38,91 @@ public class HeteroStreet implements Scene {
 
     @Override
     public void init() {
+        // Initialize Player at the starting position
         player = new Player(0, 35);
-        bg = new Sprite("src/main/resources/streets/0.png", new Vector2(0,0), 420, 55);
-        bg2 = new Sprite("src/main/resources/streets/0_1.png", new Vector2(0,0), 420, 55);
-        a = new CarEntity(410, 25, 3, -1);
         player.canMove = true;
+
+        // Load visual layers
+        backgroundBase = new Sprite("src/main/resources/streets/0.png", new Vector2(0,0), 420, 55);
+        backgroundDetail = new Sprite("src/main/resources/streets/0_1.png", new Vector2(0,0), 420, 55);
+        
+        // Spawn NPC and AI Traffic
+        trafficCar = new CarEntity(410, 25, 3, -1);
+        passengerNpc = new NPC(75, 39, 356, 39);
     }
 
     @Override
     public void update(TREngine renderer, double delta) {
-        a.update(delta);
-        autoMove++;
-        if (autoMove < 30) {
-            player.setAllX(player.pos.x() + Math.abs(autoMove - 30) / 5);
+        currentDelta = delta;
+
+        // 1. Update NPC and AI entities
+        trafficCar.update(delta);
+        passengerNpc.update(delta); 
+
+        // 2. Scripted Intro: Smoothly slide the player into the scene
+        introFrameCounter++;
+        if (introFrameCounter < 30) {
+            player.setAllX(player.pos.x() + Math.abs(introFrameCounter - 30) / 5);
         }
 
-        player.handleInput(game, width, height);
-
+        // 3. Player Logic: Input handling and Road Constraints
+        player.handleInput(game, mapWidth, mapHeight);
+        
+        // Clamp Y position to stay within the road lanes
         if (player.pos.y() > 36) player.setAllY(36);
         if (player.pos.y() < 27) player.setAllY(27);
         
-        camera.update(player.pos, width, renderer.getWidth());
+        // 4. Camera: Follow player (must be called after player movement)
+        camera.update(player.pos, mapWidth, renderer.getWidth());
         
-        // Przesuwamy pozycję gracza do narożnika tylko na potrzeby testu kolizji
-        Vector2 playerTopLeft = new Vector2(
+        // 5. Interaction Logic: Check if player picks up the passenger
+        passengerNpc.checkPickup(player, game);
+
+        // 6. Collision Detection: Prepare player hitbox for AABB test
+        Vector2 pTopLeft = new Vector2(
             player.pos.x() - (player.getHitbox().x() / 2),
             player.pos.y() - (player.getHitbox().y() / 2)
         );
 
-        if (AABB.check(playerTopLeft, player.getHitbox(), new Vector2((int)a.getX(), (int)a.getY()), a.getSize())) {
-            
+        // Check collision with the traffic car
+        if (AABB.check(pTopLeft, player.getHitbox(), 
+                       new Vector2((int)trafficCar.getX(), (int)trafficCar.getY()), 
+                       trafficCar.getSize())) {
+           // Handle crash (e.g., restart or shutdown prank)
         }
     }
 
     @Override
     public void render(TREngine renderer) {
-        bg.setPosition(new Vector2(-camera.getX(), 0));
-        bg.draw(renderer);
-        
-        Vector2 screenPlayerPos = camera.toScreenSpace(player.pos);
-        
-        Vector2 originalPos = player.pos;
-        player.pos = screenPlayerPos;
+        int camX = camera.getX();
+
+        // --- LAYER 1: Background (Road) ---
+        backgroundBase.setPosition(new Vector2(-camX, 0));
+        backgroundBase.draw(renderer);
+
+        // --- LAYER 2: World Entities (NPCs & Traffic) ---
+        passengerNpc.render(renderer, camX);
+        trafficCar.render(renderer, camX);
+
+        // --- LAYER 3: Player (Rendered in Screen Space) ---
+        Vector2 worldPosBackup = player.pos;
+        player.pos = camera.toScreenSpace(player.pos);
         player.render(renderer);
-        player.pos = originalPos;
+        player.pos = worldPosBackup; // Restore world position for physics
 
-        a.render(renderer, camera.getX());
+        // --- LAYER 4: Foreground (Street Lamps / Overlays) ---
+        backgroundDetail.setPosition(new Vector2(-camX, 0));
+        backgroundDetail.draw(renderer);
 
-        // lamps
-        bg2.setPosition(new Vector2(-camera.getX(), 0));
-        bg2.draw(renderer);
+        // --- LAYER 5: Debug Info ---
+        if (Game.debug) {
+            renderer.drawString(5, 5, "FPS Delta: " + String.format("%.4f", currentDelta), Color.BRIGHT_GREEN);
+            renderer.drawString(5, 15, "Camera X: " + camX, Color.CYAN);
+        }
     }
 
     @Override
-    public void onKeyPress(int vKey) {}
+    public void onKeyPress(int vKey) {
+        // Event-based input handling (if needed)
+    }
 }

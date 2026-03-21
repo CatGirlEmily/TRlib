@@ -10,7 +10,7 @@ public class Game extends Trlib {
     public static final boolean debug = true;
 
     public Game() {
-        super(210, 55, 30);
+        super(210, 55, 60);
         setScene(new CoolWatermark(this));
     }
 
