@@ -6,48 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Game",
-            "request": "launch",
-            "mainClass": "catgirlemily.game.Game",
-            "projectName": "trlib",
-            "console": "externalTerminal"
-        },
-        {
-            "type": "java",
             "name": "testerasci",
             "request": "launch",
-            "mainClass": "catgirlemily.demo.testerasci",
-            "projectName": "trlib",
-            "console": "externalTerminal"
-        },
-        {
-            "type": "java",
-            "name": "MyGame",
-            "request": "launch",
-            "mainClass": "catgirlemily.demo.MyGame",
+            "mainClass": "mikowy001.testerasci",
             "projectName": "trlib"
-        },
-        {
-            "type": "java",
-            "name": "AnsiTest",
-            "request": "launch",
-            "mainClass": "catgirlemily.demo.AnsiTest",
-            "projectName": "trlib_8c41d253"
-        },
-        {
-            "type": "java",
-            "name": "BounceDemo",
-            "request": "launch",
-            "mainClass": "catgirlemily.demo.BounceDemo",
-            "projectName": "trlib_8c41d253",
-            "console": "externalTerminal"
-        },
-        {
-            "type": "java",
-            "name": "Current File",
-            "request": "launch",
-            "mainClass": "${file}",
-            "console": "externalTerminal"
         }
     ]
 }
