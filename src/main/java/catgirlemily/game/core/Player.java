@@ -1,5 +1,6 @@
-package catgirlemily.game;
+package catgirlemily.game.core;
 
+import catgirlemily.game.Game;
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.KeyCode;
@@ -8,6 +9,7 @@ import catgirlemily.trlib.util.Clamp;
 
 public class Player {
     public Vector2 pos;
+    public boolean canMove = true;
 
     private double localPosX;
     private double localPosY;
@@ -30,15 +32,17 @@ public class Player {
         this.spriteStraight = new Sprite(texture[0], pos, hitboxStraight.x(), hitboxStraight.y());
         this.spriteSide     = new Sprite(texture[0], pos, hitboxSide.x(), hitboxSide.y());
         
-        this.currentSprite = spriteStraight;
-        this.currentHitbox = hitboxStraight;
+        this.currentSprite = spriteSide;
+        this.currentHitbox = hitboxSide;
     }
 
     public void handleInput(Game game, int width, int height) {
-        double speed = Game.debug && game.isKeyDown(KeyCode.SHIFT.getCode()) ? 5 : 1;
+        if (!canMove) return;
+
+        double speed = Game.debug && game.isKeyDown(KeyCode.SHIFT.getCode()) ? 5 : 2;
         if ((game.isKeyDown(KeyCode.W.getCode()) || game.isKeyDown(KeyCode.S.getCode())) && 
             (game.isKeyDown(KeyCode.A.getCode()) || game.isKeyDown(KeyCode.D.getCode()))) {
-            speed = speed / 2;
+            speed = speed / 1.5;
         }
 
         if (game.isKeyDown(KeyCode.W.getCode())) {

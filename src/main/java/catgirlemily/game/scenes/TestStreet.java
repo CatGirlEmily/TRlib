@@ -1,7 +1,7 @@
 package catgirlemily.game.scenes;
 
 import catgirlemily.game.Game;
-import catgirlemily.game.Player;
+import catgirlemily.game.core.Player;
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.drawable.Sprite;
