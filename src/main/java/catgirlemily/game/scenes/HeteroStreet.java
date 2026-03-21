@@ -8,30 +8,31 @@ import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.Vector2;
 import catgirlemily.trlib.util.Clamp;
 
-public class TestStreet implements Scene {
+public class HeteroStreet implements Scene {
     private final Game game;
     private Player player;
     private Sprite bg;
     private final int width = 420;
     private final int height = 55;
     
-    
-    // Offset kamery
+    // Offset
     private int cameraX = 0;
 
-    public TestStreet(Game game) {
+    public HeteroStreet(Game game) {
         this.game = game;
     }
 
     @Override
     public void init() {
         player = new Player(20, 22); // Zaczynamy wcześniej, żeby widzieć moment dojścia do 110
-        bg = new Sprite("src/main/resources/streets/-1.png", new Vector2(0,0), 420, 55);
+        bg = new Sprite("src/main/resources/streets/0.png", new Vector2(0,0), 420, 55);
     }
 
     @Override
     public void update(TREngine renderer, double delta) {
         player.handleInput(game, width, height);
+
+        if (player.pos.y() > 36) player.setAllY(36);
 
         if (player.pos.x() > 110) {
             cameraX = player.pos.x() - 110;
@@ -52,8 +53,6 @@ public class TestStreet implements Scene {
         player.pos = screenPlayerPos;
         player.render(renderer);
         player.pos = originalPos;
-
-        renderer.drawString(10, 10, "teststreet | Camera: " + cameraX, null);
     }
 
     @Override

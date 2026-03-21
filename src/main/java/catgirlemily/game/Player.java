@@ -89,4 +89,14 @@ public class Player {
         currentSprite.setPosition(new Vector2(renderX, renderY));
         currentSprite.draw(renderer);
     }
+
+    public void setAllX(int newX) {
+        pos = new Vector2(newX, pos.y());
+        localPosX = newX;
+    }
+
+    public void setAllY(int newY) {
+        pos = new Vector2(pos.x(), newY);
+        localPosY = newY;
+    }
 }

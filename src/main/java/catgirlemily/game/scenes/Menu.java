@@ -99,7 +99,7 @@ public class Menu implements Scene {
 
             if (key == KeyCode.ENTER || key == KeyCode.SPACE) {
                 switch (selected) {
-                    case 0 -> game.setScene(new TestStreet(game));
+                    case 0 -> game.setScene(new HeteroStreet(game));
                     case 1 -> inConfigMode = true; // Wchodzimy w edycję
                     case 3 -> System.exit(0);
                 }
