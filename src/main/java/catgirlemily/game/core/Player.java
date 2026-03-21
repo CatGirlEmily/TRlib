@@ -17,7 +17,7 @@ public class Player {
     private double localPosY;   // Precise Y coordinate for smooth movement
 
     // --- Assets & Hitboxes ---
-    private final String[] texture = {"src/main/resources/sprites/car0_0.png"};
+    private final String[] texture = {"src/main/resources/sprites/taxi.png"};
     
     // Different hitboxes based on car orientation
     private final Vector2 hitboxStraight = new Vector2(8, 6);
