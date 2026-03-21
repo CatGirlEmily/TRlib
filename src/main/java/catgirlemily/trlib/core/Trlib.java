@@ -5,6 +5,7 @@ import catgirlemily.trlib.type.KeyCode;
 
 import com.sun.jna.platform.win32.User32;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -116,38 +117,59 @@ public abstract class Trlib {
      * Scans the state of keys using GetAsyncKeyState.
      * Compares current state with the previous frame to trigger onKeyPress events.
      */
-    private void processInput() {
-        // Iterate through standard Virtual Key codes (from Backspace to Scroll Lock)
-        for (int vk = 0x08; vk <= 0x91; vk++) {
-            boolean isDown = isKeyPressed(vk);
-            
-            // "Just Pressed" Logic: key is down NOW, but was NOT down BEFORE
-            if (isDown && !lastFrameKeys.contains(vk)) {
-                onKeyPress(vk);
-                lastFrameKeys.add(vk);
-            } 
-            // "Released" Logic: remove from the set once the user lets go
-            else if (!isDown && lastFrameKeys.contains(vk)) {
-                lastFrameKeys.remove(vk);
-            }
-        }
-    }
+	private int currentLinuxKey = -1;
+	private void processInput() {
+		if (!TREngine.IsOnWindows) {
+			currentLinuxKey = -1;
+			try {
+				if (TREngine.input.available() > 0) {
+					currentLinuxKey = TREngine.input.read();
+					while (TREngine.input.available() > 0) { TREngine.input.read(); }
+				}
+			} catch (IOException e) { stop(); }
+		}
+
+		// Iterate through standard Virtual Key codes (from Backspace to Scroll Lock)
+		for (int vk = 0x08; vk <= 0x91; vk++) {
+			boolean isDown = isKeyDown(vk);
+			
+			// "Just Pressed" Logic: key is down NOW, but was NOT down BEFORE
+			if (isDown && !lastFrameKeys.contains(vk)) {
+				onKeyPress(vk);
+				lastFrameKeys.add(vk);
+			} 
+			// "Released" Logic: remove from the set once the user lets go
+			else if (!isDown && lastFrameKeys.contains(vk)) {
+				lastFrameKeys.remove(vk);
+			}
+		}
+	}
 
 
-    /**
-     * Polling: Direct query to Windows regarding the physical state of a key.
-     * @param vKey Virtual Key code.
-     * @return true if the key is currently being held down.
-     */
-    public boolean isKeyPressed(int vKey) {
-        // 0x8000 is a bitmask checking the high-order bit (current physical state)
-        short state = User32.INSTANCE.GetAsyncKeyState(vKey);
-        return (state & 0x8000) != 0;
-    }
+	/**
+	 * Polling: Direct query to Windows regarding the physical state of a key.
+	 * @param vKey Virtual Key code.
+	 * @return true if the key is currently being held down.
+	 */
+	public boolean isKeyDown(int vKey) {
+		// 0x8000 is a bitmask checking the high-order bit (current physical state)
+		if(TREngine.IsOnWindows) {
+			short state = User32.INSTANCE.GetAsyncKeyState(vKey);
+			return (state & 0x8000) != 0;
+		}
+		else {
+			vKey += 0x20;
 
-    public boolean isKeyPressed(KeyCode key) {
-        return isKeyPressed(key.getCode());
-    }
+			if (currentLinuxKey == -1) { return false; }
+
+			return currentLinuxKey == vKey;
+		}
+	}
+
+	public boolean isKeyPressed(KeyCode key) {
+		return isKeyDown(key.getCode());
+	}
+
 
 
 
