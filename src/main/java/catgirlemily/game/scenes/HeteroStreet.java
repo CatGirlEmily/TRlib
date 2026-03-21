@@ -99,7 +99,6 @@ public class HeteroStreet implements Scene {
         backgroundBase.draw(renderer);
 
         // --- LAYER 2: World Entities (NPCs & Traffic) ---
-        passengerNpc.render(renderer, camX);
         trafficCar.render(renderer, camX);
 
         // --- LAYER 3: Player (Rendered in Screen Space) ---
@@ -111,6 +110,8 @@ public class HeteroStreet implements Scene {
         // --- LAYER 4: Foreground (Street Lamps / Overlays) ---
         backgroundDetail.setPosition(new Vector2(-camX, 0));
         backgroundDetail.draw(renderer);
+
+        passengerNpc.render(renderer, camX);
 
         // --- LAYER 5: Debug Info ---
         if (Game.debug) {
