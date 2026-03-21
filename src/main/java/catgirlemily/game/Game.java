@@ -1,9 +1,7 @@
 package catgirlemily.game;
 
 import catgirlemily.trlib.TREngine;
-import catgirlemily.trlib.core.SoundManager;
 import catgirlemily.trlib.core.Trlib;
-import catgirlemily.game.Scene;
 import catgirlemily.game.scenes.CoolWatermark;
 
 public class Game extends Trlib {
