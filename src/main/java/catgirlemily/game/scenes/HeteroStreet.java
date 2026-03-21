@@ -117,8 +117,8 @@ public class HeteroStreet implements Scene {
 
         // --- LAYER 5: Debug Info ---
         if (Game.debug) {
-            renderer.drawString(5, 5, "FPS Delta: " + String.format("%.4f", currentDelta), Color.BRIGHT_GREEN);
-            renderer.drawString(5, 15, "Camera X: " + camX, Color.CYAN);
+            renderer.drawString(30, 0, "FPS Delta: " + String.format("%.4f", currentDelta), Color.BRIGHT_GREEN);
+            renderer.drawString(51, 0, "Camera X: " + camX, Color.CYAN);
         }
     }
 
