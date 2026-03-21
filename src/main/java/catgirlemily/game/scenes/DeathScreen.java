@@ -77,6 +77,5 @@ public class DeathScreen implements Scene {
 
     @Override
     public void onKeyPress(int vKey) {
-		game.setScene(new HeteroStreet(game));
 	}
 }

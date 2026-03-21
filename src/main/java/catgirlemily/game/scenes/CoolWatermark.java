@@ -5,11 +5,11 @@ import catgirlemily.trlib.core.SoundManager;
 import catgirlemily.game.Game;
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.drawable.Sprite;
+import catgirlemily.trlib.type.KeyCode;
 import catgirlemily.trlib.type.Vector2;
 
 public class CoolWatermark implements Scene {
     private int frameCounter = 0;
-	private boolean clickCounter = false;
     private final Game game;
     private Sprite[] frames;
     private final Vector2 watermarkV = new Vector2(40,5);
@@ -44,7 +44,6 @@ public class CoolWatermark implements Scene {
 
     @Override
     public void onKeyPress(int vKey) {
-        if(clickCounter == true) { frameCounter = 150; }
-		clickCounter = true;
+        if (KeyCode.fromCode(vKey) == KeyCode.F) frameCounter = 150;
     }
 }
