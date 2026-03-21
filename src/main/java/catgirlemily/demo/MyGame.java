@@ -43,10 +43,10 @@ public class MyGame extends Trlib {
 
 		// Używamy Virtual Key Codes (WinAPI) dla stabilności
 		// 0x57 = W, 0x53 = S, 0x41 = A, 0x44 = D
-		if (isKeyPressed(0x57)) { preciseY -= speed * delta; moved = true; }
-		if (isKeyPressed(0x53)) { preciseY += speed * delta; moved = true; }
-		if (isKeyPressed(0x41)) { preciseX -= speed * delta; moved = true; }
-		if (isKeyPressed(0x44)) { preciseX += speed * delta; moved = true; }
+		if (isKeyDown(0x57)) { preciseY -= speed * delta; moved = true; }
+		if (isKeyDown(0x53)) { preciseY += speed * delta; moved = true; }
+		if (isKeyDown(0x41)) { preciseX -= speed * delta; moved = true; }
+		if (isKeyDown(0x44)) { preciseX += speed * delta; moved = true; }
 
 		// Kolizje (zakładając rozmiar okna 140x40 i sprite 16x8)
 		if (preciseX < 1) preciseX = 1;
