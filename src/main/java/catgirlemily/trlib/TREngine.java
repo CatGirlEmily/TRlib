@@ -25,7 +25,7 @@ public class TREngine {
 
 	public static InputStream input = System.in;
 
-	public static boolean IsOnWindows = true;
+	public static boolean IsOnWindows = false;
 
     private String windowName = "Trlib Engine";
     private int currentBgColor = 0; // Default: Black
@@ -47,7 +47,8 @@ public class TREngine {
 
         // Enable Virtual Terminal Processing for Windows
         if(System.getProperty("os.name").toLowerCase().contains("win")) { IsOnWindows = true; }
-
+        if(System.getProperty("os.name").toLowerCase().contains("lin")) { IsOnWindows = false; }
+        
 		if(IsOnWindows) {
 			WindowsAnsiEnabler.enable();
 		}
@@ -114,6 +115,7 @@ public class TREngine {
         for (int i = 0; i < height; i++) {
             Arrays.fill(charBuffer[i], ' ');
             Arrays.fill(colorBuffer[i], Color.RESET);
+            //drawString(5, 1, "SYSTEM OPER: " + System.getProperty("os.name").toLowerCase(), null);   UNCOMMENT THIS FOR DEBUG TO SEE THE OPERATING SYSTEM IN THE CORNER
         }
     }
 
