@@ -3,6 +3,7 @@ package catgirlemily.game;
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.core.Trlib;
 import catgirlemily.game.scenes.CoolWatermark;
+import catgirlemily.game.util.Scene;
 
 public class Game extends Trlib {
     private Scene activeScene;

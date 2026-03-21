@@ -2,7 +2,7 @@ package catgirlemily.game.scenes;
 
 import catgirlemily.trlib.TREngine;
 import catgirlemily.game.Game;
-import catgirlemily.game.Scene;
+import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.Vector2;
 import catgirlemily.trlib.type.KeyCode;

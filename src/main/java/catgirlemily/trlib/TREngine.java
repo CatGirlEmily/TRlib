@@ -25,7 +25,7 @@ public class TREngine {
 
 	public static InputStream input = System.in;
 
-	public static boolean IsOnWindows = false;
+	public static boolean IsOnWindows = true;
 
     private String windowName = "Trlib Engine";
     private int currentBgColor = 0; // Default: Black

@@ -1,4 +1,4 @@
-package catgirlemily.game;
+package catgirlemily.game.util;
 
 import catgirlemily.trlib.TREngine;
 

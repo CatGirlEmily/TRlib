@@ -14,6 +14,7 @@ public final class Color {
     public static final Color YELLOW = new Color("\033[33m");
     public static final Color CYAN = new Color("\033[36m");
     public static final Color MAGENTA = new Color("\033[35m");
+    public static final Color GRAY = new Color("\u001b[90m");
     
     // Bright variants
     public static final Color BRIGHT_RED = new Color("\033[91m");

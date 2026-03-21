@@ -1,7 +1,8 @@
 package catgirlemily.game.scenes;
 
 import catgirlemily.game.Game;
-import catgirlemily.game.Scene;
+import catgirlemily.game.util.ColorPallete;
+import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.TREngine;
 import catgirlemily.trlib.drawable.StyledRect;
 import catgirlemily.trlib.type.Color;
@@ -29,14 +30,12 @@ public class Menu implements Scene {
 
     @Override
     public void render(TREngine renderer) {
-        // --- 1. RENDEROWANIE GŁÓWNYCH OPCJI ---
-        // Używamy Color.GRAY dla nieaktywnych opcji, gdy gracz edytuje Config
-        Color mainColor = inConfigMode ? Color.MAGENTA : Color.WHITE;
+        Color mainColor = Color.GRAY;
         
-        renderer.drawString(10, 20, selected == 0 ? ">>> PLAY" : "    Play", selected == 0 ? Color.CYAN : mainColor);
-        renderer.drawString(10, 23, selected == 1 ? ">>> CONFIG" : "    Config", selected == 1 ? Color.CYAN : mainColor);
-        renderer.drawString(10, 26, selected == 2 ? ">>> PIWO" : "    Piwo", selected == 2 ? Color.CYAN : mainColor);
-        renderer.drawString(10, 29, selected == 3 ? ">>> UWU" : "    Uwu", selected == 3 ? Color.CYAN : mainColor);
+        renderer.drawString(10, 20, selected == 0 ? ">>> Play" : "    Play", selected == 0 ? Color.WHITE : mainColor);
+        renderer.drawString(10, 23, selected == 1 ? ">>> Config" : "    Config", selected == 1 ? Color.WHITE : mainColor);
+        renderer.drawString(10, 26, selected == 2 ? ">>> Piwo" : "    Piwo", selected == 2 ? Color.WHITE : mainColor);
+        renderer.drawString(10, 29, selected == 3 ? ">>> Exit" : "    Exit", selected == 3 ? Color.WHITE : mainColor);
 
         // --- 2. RENDEROWANIE PANELU BOCZNEGO (Dla Config) ---
         if (selected == 1) {
@@ -45,27 +44,39 @@ public class Menu implements Scene {
     }
 
     private void renderConfigSidePanel(TREngine renderer) {
-        // Rysujemy ramkę po prawej stronie (x od 60 do 120)
+        // Panel od 120 do 200
         new StyledRect(new Vector2(120, 10), new Vector2(200, 50))
-            .withColor(inConfigMode ? Color.YELLOW : Color.WHITE)
+            .withColor(inConfigMode ? ColorPallete.THIRD : ColorPallete.FIFTH)
             .withEdges("@", "@", "@", "@")
             .withCorners("@", "@", "@", "@")
             .draw(renderer);
 
-        renderer.drawString(65, 17, "--- CONFIGURATION ---", Color.YELLOW);
+        int centerX = 160; // Środek panelu
+
+        // --- CONFIGURATION --- (długość 21 znaków) -> 160 - (21/2) = 149.5 -> 150
+        renderer.drawString(149, 12, "---[ CONFIGURATION ]---", ColorPallete.EIGHT);
 
         // Opcje wewnątrz configu
         String[] configOptions = {"Volume: 100%", "Resolution: 210x55", "Fullsreen: OFF"};
         for (int i = 0; i < configOptions.length; i++) {
-            Color c = (inConfigMode && configSelected == i) ? Color.CYAN : Color.WHITE;
+            Color c = (inConfigMode && configSelected == i) ? ColorPallete.SECOND : Color.WHITE;
             String prefix = (inConfigMode && configSelected == i) ? "> " : "  ";
-            renderer.drawString(65, 20 + (i * 2), prefix + configOptions[i], c);
+            String fullLine = prefix + configOptions[i];
+
+            // Dynamiczne centrowanie opcji (opcjonalne, ale wygląda lepiej):
+            int startX = centerX - (fullLine.length() / 2);
+            renderer.drawString(startX, 18 + (i * 2), fullLine, c);
         }
 
+        // align to center
         if (!inConfigMode) {
-            renderer.drawString(65, 33, "[Press ENTER to Edit]", Color.MAGENTA);
+            String msg = "[Press ENTER to Edit]"; // 21
+            int startX = centerX - (msg.length() / 2); // 160 - 10 = 150
+            renderer.drawString(startX, 48, msg, Color.GRAY);
         } else {
-            renderer.drawString(65, 33, "[ESC to Back]", Color.GREEN);
+            String msg = "[ESC to Back]"; // 13 znaków
+            int startX = centerX - (msg.length() / 2); // 160 - 6 = 154
+            renderer.drawString(startX, 48, msg, Color.GREEN);
         }
     }
 
@@ -88,7 +99,7 @@ public class Menu implements Scene {
 
             if (key == KeyCode.ENTER || key == KeyCode.SPACE) {
                 switch (selected) {
-                    case 0 -> game.setScene(new template(game));
+                    case 0 -> game.setScene(new TestStreet(game));
                     case 1 -> inConfigMode = true; // Wchodzimy w edycję
                     case 3 -> System.exit(0);
                 }

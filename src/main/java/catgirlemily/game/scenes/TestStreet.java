@@ -4,10 +4,10 @@ import catgirlemily.game.Game;
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.TREngine;
 
-public class template implements Scene {
+public class TestStreet implements Scene {
     private final Game game;
 
-    public template(Game game) {
+    public TestStreet(Game game) {
         this.game = game;
     }
 
