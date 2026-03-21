@@ -7,6 +7,7 @@ import catgirlemily.game.util.Scene;
 
 public class Game extends Trlib {
     private Scene activeScene;
+    public static final boolean debug = true;
 
     public Game() {
         super(210, 55, 30);
