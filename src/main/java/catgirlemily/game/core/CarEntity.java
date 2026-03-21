@@ -32,6 +32,7 @@ public class CarEntity {
         // Ruch poziomy: pozycja += kierunek * prędkość
         // Jeśli chcesz używać delty: x += direction * speed * delta * 60;
         x += direction * speed;
+        if(x < -12) x = 420;
     }
 
     public void render(TREngine renderer, int cameraX) {
@@ -47,4 +48,8 @@ public class CarEntity {
     public double getX() { return x; }
     public double getY() { return y; }
     public Vector2 getSize() { return size; }
+
+    public void setPos(int x, int y) {
+        sprite.setPosition(new Vector2(x, y));
+    }
 }

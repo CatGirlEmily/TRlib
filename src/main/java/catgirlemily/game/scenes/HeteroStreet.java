@@ -4,9 +4,10 @@ import catgirlemily.game.Game;
 import catgirlemily.game.core.Camera;
 import catgirlemily.game.core.CarEntity;
 import catgirlemily.game.core.Player;
-import catgirlemily.game.core.SystemCommand;
+
 import catgirlemily.game.util.Scene;
 import catgirlemily.trlib.TREngine;
+import catgirlemily.trlib.core.Trlib;
 import catgirlemily.trlib.drawable.Sprite;
 import catgirlemily.trlib.type.Vector2;
 import catgirlemily.trlib.util.AABB;
@@ -20,8 +21,7 @@ public class HeteroStreet implements Scene {
     private final int width = 420;
     private final int height = 55;
     private int autoMove = 0;
-    private Camera camera = new Camera();
-    
+    private Camera camera = new Camera();   
     // Offset
     private int cameraX = 0;
 
@@ -50,7 +50,7 @@ public class HeteroStreet implements Scene {
 
         if (player.pos.y() > 36) player.setAllY(36);
         if (player.pos.y() < 27) player.setAllY(27);
-        
+  
         camera.update(player.pos, width, renderer.getWidth());
         
         // Przesuwamy pozycję gracza do narożnika tylko na potrzeby testu kolizji

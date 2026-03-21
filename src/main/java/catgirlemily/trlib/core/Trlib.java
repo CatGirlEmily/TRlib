@@ -21,12 +21,12 @@ public abstract class Trlib {
     public Trlib(int width, int height, int fps) {
         this.renderer = new TREngine(width, height, fps);
         
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            stop();
-            System.out.print("\033[?25h\033[0m"); 
-            System.out.flush();
-            System.out.println("\n[Trlib] Engine stopped safely.");
-        }));
+        //Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+        //    stop();
+        //    System.out.print("\033[?25h\033[0m"); 
+        //    System.out.flush();
+        //    System.out.println("\n[Trlib] Engine stopped safely.");
+        //}));
     }
 
     public abstract void onUpdate(TREngine renderer, double delta);

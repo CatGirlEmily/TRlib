@@ -14,7 +14,7 @@ public class Player {
     private double localPosX;
     private double localPosY;
 
-    private final String[] texture = {"src/main/resources/sprites/car0_0.png"};
+    private final String[] texture = {"src/main/resources/sprites/taxi.png"};
     
     private final Vector2 hitboxStraight = new Vector2(8, 6);
     private final Vector2 hitboxSide     = new Vector2(12, 4);
